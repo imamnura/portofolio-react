@@ -12,11 +12,11 @@ type FooterProps = {
 
 export function Footer({ profile, t, navLinks }: FooterProps) {
   return (
-    <footer className="bg-slate-950 text-slate-400 py-16 px-4 md:px-8 relative overflow-hidden">
+    <footer className="bg-slate-950 text-slate-400 py-12 sm:py-16 px-3 sm:px-4 md:px-8 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-30" />
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-        <div className="col-span-1 lg:col-span-2">
-          <h3 className="text-3xl font-black text-white mb-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 mb-10 sm:mb-12">
+        <div className="col-span-1 lg:col-span-2 min-w-0">
+          <h3 className="text-2xl sm:text-3xl font-black text-white mb-6 break-words">
             {profile.name}
           </h3>
           <p className="text-slate-400 max-w-sm mb-8 font-medium leading-relaxed">
@@ -27,25 +27,28 @@ export function Footer({ profile, t, navLinks }: FooterProps) {
               href={profile.linkedin}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={t.a11y.linkedInProfile}
               className="p-3 bg-slate-900 rounded-xl hover:bg-blue-600 hover:text-white hover:-translate-y-1 transition-all border border-slate-800"
             >
-              <Linkedin size={20} />
+              <Linkedin size={20} aria-hidden />
             </a>
             <a
               href={profile.github}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={t.a11y.githubProfile}
               className="p-3 bg-slate-900 rounded-xl hover:bg-white hover:text-slate-900 hover:-translate-y-1 transition-all border border-slate-800"
             >
-              <Github size={20} />
+              <Github size={20} aria-hidden />
             </a>
             <a
               href={profile.website}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={t.a11y.personalWebsite}
               className="p-3 bg-slate-900 rounded-xl hover:bg-blue-600 hover:text-white hover:-translate-y-1 transition-all border border-slate-800"
             >
-              <Globe size={20} />
+              <Globe size={20} aria-hidden />
             </a>
           </div>
         </div>
@@ -55,12 +58,13 @@ export function Footer({ profile, t, navLinks }: FooterProps) {
             {t.footer.contact}
           </h4>
           <ul className="space-y-4 font-medium">
-            <li>
+            <li className="min-w-0">
               <a
                 href={`mailto:${profile.email}`}
-                className="flex items-center gap-3 hover:text-white hover:translate-x-1 transition-all"
+                className="flex items-start gap-3 hover:text-white hover:translate-x-1 transition-all break-all"
               >
-                <Mail size={18} className="text-slate-500" /> {profile.email}
+                <Mail size={18} className="text-slate-500 shrink-0 mt-0.5" />{" "}
+                <span>{profile.email}</span>
               </a>
             </li>
             <li>
@@ -68,15 +72,23 @@ export function Footer({ profile, t, navLinks }: FooterProps) {
                 href={`https://wa.me/${profile.wa}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${t.a11y.whatsappContact}: +${profile.wa}`}
                 className="flex items-center gap-3 hover:text-white hover:translate-x-1 transition-all"
               >
-                <WhatsAppIcon className="w-4 h-4 text-slate-500 shrink-0" />+
+                <WhatsAppIcon className="w-4 h-4 text-slate-500 shrink-0" aria-hidden />+
                 {profile.wa}
               </a>
             </li>
             <li className="flex items-center gap-3">
-              <MapPin size={18} className="text-slate-500 shrink-0" />{" "}
-              {profile.location}
+              <MapPin
+                size={18}
+                className="text-slate-500 shrink-0"
+                aria-hidden
+              />
+              <span>
+                <span className="sr-only">{t.a11y.locationInfo}: </span>
+                {profile.location}
+              </span>
             </li>
           </ul>
         </div>
@@ -105,8 +117,13 @@ export function Footer({ profile, t, navLinks }: FooterProps) {
           &copy; {new Date().getFullYear()} {profile.name}. All rights reserved.
         </p>
         <p className="mt-2 md:mt-0 flex items-center gap-1">
-          Built with <Code2 size={14} className="text-blue-500" /> in React &
-          Tailwind
+          Built with{" "}
+          <Code2
+            size={14}
+            className="text-blue-500"
+            aria-hidden
+          />{" "}
+          in React & Tailwind
         </p>
       </div>
     </footer>

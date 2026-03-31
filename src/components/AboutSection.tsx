@@ -19,13 +19,13 @@ export function AboutSection({ profile, lang, t }: AboutSectionProps) {
   ];
 
   return (
-    <section id="about" className="py-24 px-4 md:px-8">
+    <section id="about" className="py-16 sm:py-24 px-3 sm:px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border border-white dark:border-slate-700 rounded-[2.5rem] p-8 md:p-14 shadow-xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden"
+          className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border border-white dark:border-slate-700 rounded-3xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-14 shadow-xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 dark:bg-slate-700/50 rounded-full blur-3xl -z-10 transform translate-x-1/2 -translate-y-1/2" />
 
@@ -34,21 +34,21 @@ export function AboutSection({ profile, lang, t }: AboutSectionProps) {
             {profile.summary[lang]}
           </p>
 
-          <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mt-10 sm:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {stats.map((stat) => (
               <motion.div
                 key={stat.label}
                 whileHover={{ y: -5 }}
-                className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col justify-center"
+                className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col justify-center min-w-0"
               >
                 <stat.icon
                   className="text-blue-500 mb-4 opacity-80"
                   size={28}
                 />
-                <div className="text-sm font-bold text-slate-400 dark:text-slate-500 mb-1 uppercase tracking-wider">
+                <div className="text-[0.65rem] sm:text-sm font-bold text-slate-400 dark:text-slate-500 mb-1 uppercase tracking-wider leading-tight">
                   {stat.label}
                 </div>
-                <div className="text-lg font-black text-slate-800 dark:text-white">
+                <div className="text-base sm:text-lg font-black text-slate-800 dark:text-white break-words">
                   {stat.value}
                 </div>
               </motion.div>

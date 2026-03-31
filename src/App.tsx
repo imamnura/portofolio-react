@@ -45,6 +45,10 @@ export default function App() {
     document.documentElement.classList.toggle("dark", isDark);
   }, [isDark]);
 
+  useEffect(() => {
+    document.documentElement.lang = lang === "id" ? "id" : "en";
+  }, [lang]);
+
   const handleContactSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
     setContactStatus("submitting");

@@ -33,15 +33,16 @@ export function ContactModal({
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 30 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-slate-800 w-full max-w-xl rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative border border-slate-100 dark:border-slate-700 my-8"
+        className="bg-white dark:bg-slate-800 w-full max-w-xl max-h-[min(100dvh-2rem,900px)] overflow-y-auto custom-scrollbar rounded-2xl sm:rounded-[2.5rem] p-6 sm:p-8 md:p-10 shadow-2xl relative border border-slate-100 dark:border-slate-700 my-4 sm:my-8"
       >
         {contactStatus !== "submitting" && (
           <button
             type="button"
             onClick={onClose}
+            aria-label={t.contactModal.close}
             className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors"
           >
-            <X size={24} />
+            <X size={24} aria-hidden />
           </button>
         )}
 

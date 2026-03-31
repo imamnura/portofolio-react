@@ -17,7 +17,7 @@ export function ExperienceSection({
   t,
 }: ExperienceSectionProps) {
   return (
-    <section id="experience" className="py-24 px-4 md:px-8">
+    <section id="experience" className="py-16 sm:py-24 px-3 sm:px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <SectionHeading title={t.experience.title} icon={Briefcase} />
 
@@ -47,24 +47,24 @@ export function ExperienceSection({
                 <div className="absolute left-[20px] md:left-auto md:-right-[29px] top-6 md:top-3 w-5 h-5 rounded-full bg-white dark:bg-slate-900 border-4 border-blue-500 group-hover:scale-150 group-hover:bg-blue-100 transition-all shadow-md" />
               </div>
 
-              <div className="flex-1 bg-white dark:bg-slate-800 rounded-[2rem] p-8 border border-slate-100 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+              <div className="flex-1 bg-white dark:bg-slate-800 rounded-3xl sm:rounded-[2rem] p-5 sm:p-8 border border-slate-100 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden min-w-0">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 dark:bg-slate-700/30 rounded-full blur-3xl -mr-10 -mt-10" />
                 <div className="relative z-10">
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-1">
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-1 break-words">
                     {exp.role}
                   </h3>
-                  <div className="text-lg font-bold text-blue-600 dark:text-blue-400 mb-6">
+                  <div className="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400 mb-6 break-words">
                     {exp.company} • {exp.location}
                   </div>
 
-                  <ul className="space-y-4">
+                  <ul className="m-0 list-none space-y-4 p-0">
                     {(lang === "id" ? exp.highlightsId : exp.highlightsEn).map(
                       (item, i) => (
-                        <li key={i} className="flex items-start gap-4">
-                          <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 shrink-0 group-hover:bg-blue-400 transition-colors" />
-                          <span className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
-                            {item}
-                          </span>
+                        <li
+                          key={i}
+                          className="relative pl-6 font-medium leading-relaxed text-slate-600 before:absolute before:left-0 before:top-[0.55rem] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-slate-300 before:transition-colors before:content-[''] dark:text-slate-300 dark:before:bg-slate-600 group-hover:before:bg-blue-400 dark:group-hover:before:bg-blue-400"
+                        >
+                          {item}
                         </li>
                       ),
                     )}

@@ -44,17 +44,18 @@ export function ProjectModal({ project, onClose, lang, t }: ProjectModalProps) {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 30 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-[2.5rem] shadow-2xl relative border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col md:max-h-[90vh]"
+        className="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-2xl sm:rounded-[2.5rem] shadow-2xl relative border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col max-h-[min(100dvh,900px)] md:max-h-[90vh]"
       >
         <button
           type="button"
           onClick={onClose}
+          aria-label={t.a11y.closeModal}
           className="absolute top-4 right-4 md:top-6 md:right-6 z-10 p-2.5 bg-black/40 hover:bg-black/60 text-white backdrop-blur-md rounded-full transition-all"
         >
-          <X size={24} />
+          <X size={24} aria-hidden />
         </button>
 
-        <div className="relative w-full h-64 md:h-[450px] bg-slate-100 dark:bg-slate-800 overflow-hidden group">
+        <div className="relative w-full h-52 sm:h-64 md:h-[450px] shrink-0 bg-slate-100 dark:bg-slate-800 overflow-hidden group">
           <AnimatePresence mode="wait">
             <motion.img
               key={imgIndex}
@@ -65,6 +66,9 @@ export function ProjectModal({ project, onClose, lang, t }: ProjectModalProps) {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="absolute w-full h-full object-cover"
               alt={`${project.title} screenshot ${imgIndex + 1}`}
+              width={1200}
+              height={630}
+              decoding="async"
             />
           </AnimatePresence>
 
@@ -73,16 +77,18 @@ export function ProjectModal({ project, onClose, lang, t }: ProjectModalProps) {
               <button
                 type="button"
                 onClick={prevImg}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/20 hover:bg-black/50 text-white backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-all"
+                aria-label={t.a11y.previousImage}
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-black/40 hover:bg-black/60 text-white backdrop-blur-md rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all"
               >
-                <ChevronLeft size={24} />
+                <ChevronLeft size={24} aria-hidden />
               </button>
               <button
                 type="button"
                 onClick={nextImg}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/20 hover:bg-black/50 text-white backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-all"
+                aria-label={t.a11y.nextImage}
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2.5 sm:p-3 bg-black/40 hover:bg-black/60 text-white backdrop-blur-md rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all"
               >
-                <ChevronRight size={24} />
+                <ChevronRight size={24} aria-hidden />
               </button>
 
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -91,6 +97,8 @@ export function ProjectModal({ project, onClose, lang, t }: ProjectModalProps) {
                     type="button"
                     key={idx}
                     onClick={() => setImgIndex(idx)}
+                    aria-label={`${t.a11y.goToSlide} ${idx + 1} ${t.a11y.slideOf} ${project.images.length}`}
+                    aria-current={idx === imgIndex ? "true" : undefined}
                     className={`w-2.5 h-2.5 rounded-full transition-all ${idx === imgIndex ? "bg-white scale-125" : "bg-white/50 hover:bg-white/80"}`}
                   />
                 ))}
@@ -99,12 +107,12 @@ export function ProjectModal({ project, onClose, lang, t }: ProjectModalProps) {
           )}
 
           <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-slate-900/90 to-transparent pointer-events-none" />
-          <h3 className="absolute bottom-6 left-6 md:bottom-8 md:left-10 text-3xl md:text-5xl font-black text-white drop-shadow-lg tracking-tight">
+          <h3 className="absolute bottom-4 left-4 right-14 sm:bottom-6 sm:left-6 md:bottom-8 md:left-10 md:right-auto text-2xl sm:text-3xl md:text-5xl font-black text-white drop-shadow-lg tracking-tight break-words pr-2">
             {project.title}
           </h3>
         </div>
 
-        <div className="p-6 md:p-10 flex flex-col gap-8 md:overflow-y-auto custom-scrollbar bg-white dark:bg-slate-900">
+        <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-6 sm:gap-8 min-h-0 flex-1 overflow-y-auto custom-scrollbar bg-white dark:bg-slate-900">
           <div className="max-h-[140px] md:max-h-[160px] overflow-y-auto custom-scrollbar pr-4 text-slate-600 dark:text-slate-300">
             <p className="text-base md:text-lg leading-relaxed font-medium">
               {lang === "id" ? project.descId : project.descEn}
