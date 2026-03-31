@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 100">
+  <defs>
+    <linearGradient id="gradKoneksi" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0047AB" /> <stop offset="100%" stop-color="#001F5B" /> </linearGradient>
+  </defs>
+  
+  <circle cx="50" cy="50" r="35" fill="url(#gradKoneksi)" />
+  
+  <text x="50" y="62" font-family="Courier New, monospace" font-size="42" font-weight="black" fill="#ffffff" text-anchor="middle">
+    &lt;/&gt;
+  </text>
+  
+  <circle cx="25" cy="25" r="4" fill="#ffffff" opacity="0.7"/>
+  <circle cx="75" cy="75" r="4" fill="#ffffff" opacity="0.7"/>
+  <path d="M50 15 L25 25 M50 85 L75 75" stroke="#ffffff" stroke-width="2" opacity="0.5"/>
+  
+  <text x="100" y="60" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="bold" fill="#001F5B">
+    imamnura
+  </text>
+</svg>

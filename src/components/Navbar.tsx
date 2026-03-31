@@ -1,11 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Languages,
-  Menu,
-  Moon,
-  Sun,
-  X,
-} from "lucide-react";
+import { Languages, Menu, Moon, Sun, X } from "lucide-react";
 import type { Dictionary, Lang } from "../constants/dictionary";
 
 export type NavLinkItem = { name: string; href: string };
@@ -46,7 +40,13 @@ export function Navbar({
           href="#"
           className="text-2xl font-black text-slate-800 dark:text-white tracking-tighter hover:opacity-80 transition-opacity"
         >
-          Imam<span className="text-blue-600 dark:text-blue-400">.dev</span>
+          {/* Imam<span className="text-blue-600 dark:text-blue-400">.dev</span> */}
+          <img
+            src="/logo.svg"
+            alt="logo"
+            className="w-32 h-32"
+            loading="lazy"
+          />
         </a>
 
         <div className="hidden md:flex items-center gap-8">
