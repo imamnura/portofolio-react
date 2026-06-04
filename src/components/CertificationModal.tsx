@@ -34,7 +34,7 @@ export function CertificationModal({
         <button
           type="button"
           onClick={onClose}
-          aria-label={t.contactModal.close}
+          aria-label={t.a11y.closeModal}
           className="absolute top-6 right-6 p-2 bg-slate-100 dark:bg-slate-700 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/50 dark:hover:text-red-400 rounded-full transition-colors"
         >
           <X size={20} aria-hidden />

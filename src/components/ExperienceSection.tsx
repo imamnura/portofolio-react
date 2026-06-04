@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
 import type { Experience } from "../types/portfolio";
-import type { Dictionary } from "../constants/dictionary";
-import type { Lang } from "../constants/dictionary";
+import type { Dictionary, Lang } from "../constants/dictionary";
 import { SectionHeading } from "./SectionHeading";
 
 type ExperienceSectionProps = {

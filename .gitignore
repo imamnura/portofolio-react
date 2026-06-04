@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+
+# Coverage report
+coverage
+
+# .claude
+.claude
+
+# .cursor
+.cursor

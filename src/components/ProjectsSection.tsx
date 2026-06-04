@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Globe, Layout } from "lucide-react";
 import type { Project } from "../types/portfolio";
-import type { Dictionary } from "../constants/dictionary";
-import type { Lang } from "../constants/dictionary";
+import type { Dictionary, Lang } from "../constants/dictionary";
 import { fadeInUp, staggerContainer } from "../utils/motionVariants";
 import { SectionHeading } from "./SectionHeading";
 

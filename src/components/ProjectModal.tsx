@@ -1,4 +1,4 @@
-import { useState, type MouseEvent } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -24,7 +24,8 @@ export function ProjectModal({ project, onClose, lang, t }: ProjectModalProps) {
     e.stopPropagation();
     setImgIndex((prev) => (prev + 1) % project.images.length);
   };
-  const prevImg = (e: MouseEvent) => {
+
+  const prevImg = (e: React.MouseEvent) => {
     e.stopPropagation();
     setImgIndex((prev) =>
       prev === 0 ? project.images.length - 1 : prev - 1,

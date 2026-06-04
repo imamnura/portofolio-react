@@ -41,7 +41,6 @@ export function Navbar({
           aria-label={t.a11y.home}
           className="shrink-0 flex items-center text-2xl font-black text-slate-800 dark:text-white tracking-tighter hover:opacity-80 transition-opacity"
         >
-          {/* Imam<span className="text-blue-600 dark:text-blue-400">.dev</span> */}
           <img
             src="/logo.svg"
             alt=""
