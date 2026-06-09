@@ -1,6 +1,6 @@
-import type { FormEvent } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, Send, X } from "lucide-react";
+import type { FormEvent } from "react";
 import type { Dictionary } from "../constants/dictionary";
 
 export type ContactStatus = "idle" | "submitting" | "success";
@@ -12,12 +12,7 @@ type ContactModalProps = {
   onSubmit: (e: FormEvent) => void;
 };
 
-export function ContactModal({
-  onClose,
-  t,
-  contactStatus,
-  onSubmit,
-}: ContactModalProps) {
+export function ContactModal({ onClose, t, contactStatus, onSubmit }: ContactModalProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}

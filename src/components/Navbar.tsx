@@ -2,7 +2,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Languages, Menu, Moon, Sun, X } from "lucide-react";
 import type { Dictionary, Lang } from "../constants/dictionary";
 
-export type NavLinkItem = { name: string; href: string };
+export type SectionId = "about" | "skills" | "experience" | "projects";
+
+export type NavLinkItem = { name: string; id: SectionId };
 
 type NavbarProps = {
   isScrolled: boolean;
@@ -13,6 +15,9 @@ type NavbarProps = {
   isDark: boolean;
   setIsDark: (dark: boolean) => void;
   navLinks: NavLinkItem[];
+  activeSection: SectionId | null;
+  onNavigate: (id: SectionId) => void;
+  onGoHome: () => void;
   t: Dictionary;
   onOpenContact: () => void;
 };
@@ -26,18 +31,34 @@ export function Navbar({
   isDark,
   setIsDark,
   navLinks,
+  activeSection,
+  onNavigate,
+  onGoHome,
   t,
   onOpenContact,
 }: NavbarProps) {
   const toggleLang = () => setLang(lang === "id" ? "en" : "id");
+
+  const handleNavigate = (id: SectionId) => {
+    onNavigate(id);
+    setMobileMenuOpen(false);
+  };
+
+  const navLinkClass = (id: SectionId) =>
+    `text-sm font-semibold transition-colors ${
+      activeSection === id
+        ? "text-blue-600 dark:text-blue-400"
+        : "text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+    }`;
 
   return (
     <nav
       className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-sm py-3" : "bg-transparent py-5"}`}
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 flex justify-between items-center gap-3 relative z-10 min-h-[3.25rem] sm:min-h-0">
-        <a
-          href="#"
+        <button
+          type="button"
+          onClick={onGoHome}
           aria-label={t.a11y.home}
           className="shrink-0 flex items-center text-2xl font-black text-slate-800 dark:text-white tracking-tighter hover:opacity-80 transition-opacity"
         >
@@ -51,17 +72,19 @@ export function Navbar({
             fetchPriority="high"
             decoding="async"
           />
-        </a>
+        </button>
 
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            <button
+              key={link.id}
+              type="button"
+              onClick={() => handleNavigate(link.id)}
+              className={navLinkClass(link.id)}
+              aria-current={activeSection === link.id ? "page" : undefined}
             >
               {link.name}
-            </a>
+            </button>
           ))}
 
           <div className="flex items-center gap-4 border-l border-slate-200 dark:border-slate-700 pl-6">
@@ -140,14 +163,19 @@ export function Navbar({
           >
             <div className="py-4 px-4 flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-slate-600 dark:text-slate-300 font-bold py-2 hover:text-blue-600 px-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
-                  onClick={() => setMobileMenuOpen(false)}
+                <button
+                  key={link.id}
+                  type="button"
+                  onClick={() => handleNavigate(link.id)}
+                  className={`text-left font-bold py-2 px-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                    activeSection === link.id
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-slate-600 dark:text-slate-300 hover:text-blue-600"
+                  }`}
+                  aria-current={activeSection === link.id ? "page" : undefined}
                 >
                   {link.name}
-                </a>
+                </button>
               ))}
               <button
                 type="button"

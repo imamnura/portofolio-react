@@ -18,15 +18,7 @@ export const DATA: SiteData = {
     },
   },
   skills: {
-    Frontend: [
-      "React",
-      "Next.js",
-      "Vue",
-      "TypeScript",
-      "JavaScript",
-      "HTML 5",
-      "CSS 3",
-    ],
+    Frontend: ["React", "Next.js", "Vue", "TypeScript", "JavaScript", "HTML 5", "CSS 3"],
     Backend: ["Node JS", "Express", "PHP"],
     "UI & Styling": [
       "Material UI",
@@ -224,8 +216,7 @@ export const DATA: SiteData = {
     {
       title: "Building Progressive Web Apps (PWAs)",
       issuer: "LinkedIn Learning",
-      descId:
-        "Teknik merubah web menjadi aplikasi layaknya native dengan fitur offline dan PWA.",
+      descId: "Teknik merubah web menjadi aplikasi layaknya native dengan fitur offline dan PWA.",
       descEn:
         "Techniques to transform web apps into native-like experiences with offline capabilities and PWA features.",
     },
@@ -248,8 +239,7 @@ export const DATA: SiteData = {
     {
       title: "Dasar-dasar Desain UX",
       issuer: "Google",
-      descId:
-        "Konsep dasar User Experience (UX), empati pengguna, dan desain yang human-centric.",
+      descId: "Konsep dasar User Experience (UX), empati pengguna, dan desain yang human-centric.",
       descEn:
         "Fundamental concepts of User Experience (UX), user empathy, and human-centric design.",
     },

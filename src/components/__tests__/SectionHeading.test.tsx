@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { SectionHeading } from "../SectionHeading";
 import { Code2 } from "lucide-react";
+import { describe, expect, it, vi } from "vitest";
+import { SectionHeading } from "../SectionHeading";
 
 vi.mock("framer-motion", () => ({
   motion: {

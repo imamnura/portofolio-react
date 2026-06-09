@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Globe, Layout } from "lucide-react";
-import type { Project } from "../types/portfolio";
 import type { Dictionary, Lang } from "../constants/dictionary";
+import type { Project } from "../types/portfolio";
 import { fadeInUp, staggerContainer } from "../utils/motionVariants";
 import { SectionHeading } from "./SectionHeading";
 
@@ -12,12 +12,7 @@ type ProjectsSectionProps = {
   onSelectProject: (project: Project) => void;
 };
 
-export function ProjectsSection({
-  projects,
-  lang,
-  t,
-  onSelectProject,
-}: ProjectsSectionProps) {
+export function ProjectsSection({ projects, lang, t, onSelectProject }: ProjectsSectionProps) {
   return (
     <section id="projects" className="py-16 sm:py-24 px-3 sm:px-4 md:px-8 relative">
       <div className="max-w-7xl mx-auto">

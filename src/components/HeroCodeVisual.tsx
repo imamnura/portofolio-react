@@ -14,17 +14,12 @@ export function HeroCodeVisual() {
             <div className="w-3.5 h-3.5 rounded-full bg-red-400 shadow-sm" />
             <div className="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-sm" />
             <div className="w-3.5 h-3.5 rounded-full bg-green-400 shadow-sm" />
-            <div className="ml-4 text-xs sf-mono-font text-slate-400">
-              imam_portfolio.jsx
-            </div>
+            <div className="ml-4 text-xs sf-mono-font text-slate-400">imam_portfolio.jsx</div>
           </div>
           <div className="p-8 sf-mono-font text-sm md:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
             <div>
               <span className="text-purple-600 dark:text-purple-400">const</span>{" "}
-              <span className="text-blue-600 dark:text-blue-400">
-                softwareEngineer
-              </span>{" "}
-              = {"{"}
+              <span className="text-blue-600 dark:text-blue-400">softwareEngineer</span> = {"{"}
             </div>
             <div className="pl-8 pt-2">
               name:{" "}
@@ -41,25 +36,14 @@ export function HeroCodeVisual() {
               ,
             </div>
             <div className="pl-8">
-              skills: [
-              <span className="text-green-600 dark:text-green-400">
-                &apos;React&apos;
-              </span>
-              ,{" "}
-              <span className="text-green-600 dark:text-green-400">
-                &apos;Next.js&apos;
-              </span>
-              ,{" "}
-              <span className="text-green-600 dark:text-green-400">
-                &apos;Tailwind&apos;
-              </span>
+              skills: [<span className="text-green-600 dark:text-green-400">&apos;React&apos;</span>
+              , <span className="text-green-600 dark:text-green-400">&apos;Next.js&apos;</span>,{" "}
+              <span className="text-green-600 dark:text-green-400">&apos;Tailwind&apos;</span>
               ],
             </div>
             <div className="pl-8">
               passion:{" "}
-              <span className="text-green-600 dark:text-green-400">
-                &apos;UI Performance&apos;
-              </span>
+              <span className="text-green-600 dark:text-green-400">&apos;UI Performance&apos;</span>
               ,
             </div>
             <div className="pl-8">
@@ -67,13 +51,9 @@ export function HeroCodeVisual() {
             </div>
             <div className="pt-2">{"}"};</div>
             <div className="mt-6 flex gap-2">
-              <span className="text-purple-600 dark:text-purple-400">
-                export default
-              </span>{" "}
-              <span className="text-blue-600 dark:text-blue-400">
-                softwareEngineer
-              </span>
-              ;
+              <span className="text-purple-600 dark:text-purple-400">export default</span>{" "}
+              <span className="text-blue-600 dark:text-blue-400">softwareEngineer</span>
+              <span className="text-slate-400">;</span>
             </div>
             <motion.div
               animate={{ opacity: [1, 0, 1] }}

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Award, X } from "lucide-react";
-import type { Certification } from "../types/portfolio";
 import type { Dictionary, Lang } from "../constants/dictionary";
+import type { Certification } from "../types/portfolio";
 
 type CertificationModalProps = {
   cert: Certification;
@@ -10,12 +10,7 @@ type CertificationModalProps = {
   t: Dictionary;
 };
 
-export function CertificationModal({
-  cert,
-  onClose,
-  lang,
-  t,
-}: CertificationModalProps) {
+export function CertificationModal({ cert, onClose, lang, t }: CertificationModalProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -43,12 +38,8 @@ export function CertificationModal({
         <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center mb-6">
           <Award size={32} />
         </div>
-        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">
-          {cert.title}
-        </h3>
-        <p className="text-blue-600 dark:text-blue-400 font-bold mb-6">
-          {cert.issuer}
-        </p>
+        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">{cert.title}</h3>
+        <p className="text-blue-600 dark:text-blue-400 font-bold mb-6">{cert.issuer}</p>
 
         <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
           <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed">

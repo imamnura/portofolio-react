@@ -1,17 +1,9 @@
 import { motion } from "framer-motion";
-import {
-  Code2,
-  Database,
-  Globe,
-  Layout,
-  Server,
-  Settings,
-  Terminal,
-} from "lucide-react";
-import type { SkillsMap } from "../types/portfolio";
+import { Code2, Database, Globe, Layout, Server, Settings, Terminal } from "lucide-react";
 import type { Dictionary } from "../constants/dictionary";
-import { getTechIcon } from "../utils/techIcons";
+import type { SkillsMap } from "../types/portfolio";
 import { fadeInUp, staggerContainer } from "../utils/motionVariants";
+import { getTechIcon } from "../utils/techIcons";
 import { SectionHeading } from "./SectionHeading";
 
 type SkillsSectionProps = {
@@ -40,32 +32,19 @@ export function SkillsSection({ skills, t }: SkillsSectionProps) {
             >
               <div className="flex items-center gap-4 mb-8 border-b border-slate-100 dark:border-slate-700 pb-4">
                 <div className="p-3 bg-slate-100 dark:bg-slate-900 rounded-xl group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
-                  {category.includes("Frontend") && (
-                    <Layout className="text-blue-500" size={24} />
-                  )}
-                  {category.includes("Backend") && (
-                    <Server className="text-green-500" size={24} />
-                  )}
-                  {category.includes("UI") && (
-                    <Globe className="text-purple-500" size={24} />
-                  )}
-                  {category.includes("State") && (
-                    <Database className="text-orange-500" size={24} />
-                  )}
-                  {category.includes("Testing") && (
-                    <Code2 className="text-red-500" size={24} />
-                  )}
+                  {category.includes("Frontend") && <Layout className="text-blue-500" size={24} />}
+                  {category.includes("Backend") && <Server className="text-green-500" size={24} />}
+                  {category.includes("UI") && <Globe className="text-purple-500" size={24} />}
+                  {category.includes("State") && <Database className="text-orange-500" size={24} />}
+                  {category.includes("Testing") && <Code2 className="text-red-500" size={24} />}
                   {category.includes("Performance") && (
                     <Terminal className="text-teal-500" size={24} />
                   )}
-                  {(category.includes("DevOps") ||
-                    category.includes("Tools")) && (
+                  {(category.includes("DevOps") || category.includes("Tools")) && (
                     <Settings className="text-slate-500" size={24} />
                   )}
                 </div>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white">
-                  {category}
-                </h3>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-white">{category}</h3>
               </div>
               <div className="flex flex-wrap gap-3">
                 {skillList.map((skill) => {

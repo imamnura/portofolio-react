@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { staggerContainer, fadeInUp } from "../motionVariants";
+import { describe, expect, it } from "vitest";
+import { fadeInUp, staggerContainer } from "../motionVariants";
 
 describe("staggerContainer", () => {
   it("has a hidden state with opacity 0", () => {

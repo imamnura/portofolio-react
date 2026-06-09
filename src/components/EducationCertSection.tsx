@@ -1,12 +1,7 @@
 import { motion } from "framer-motion";
-import {
-  Award,
-  ChevronRight,
-  GraduationCap,
-  MapPin,
-} from "lucide-react";
-import type { Certification } from "../types/portfolio";
+import { Award, ChevronRight, GraduationCap, MapPin } from "lucide-react";
 import type { Dictionary } from "../constants/dictionary";
+import type { Certification } from "../types/portfolio";
 import { SectionHeading } from "./SectionHeading";
 
 type EducationCertSectionProps = {
@@ -65,8 +60,8 @@ export function EducationCertSection({
           <SectionHeading title={t.eduCert.certTitle} icon={Award} />
           <div className="bg-white dark:bg-slate-800 p-3 sm:p-4 rounded-3xl sm:rounded-[2rem] border border-slate-200 dark:border-slate-700 shadow-sm h-[min(400px,55vh)] sm:h-[400px] overflow-y-auto custom-scrollbar pr-2">
             <ul className="m-0 list-none space-y-3 p-0">
-              {certifications.map((cert, index) => (
-                <li key={`${cert.title}-${index}`}>
+              {certifications.map((cert) => (
+                <li key={`${cert.title}-${cert.issuer}`}>
                   <button
                     type="button"
                     onClick={() => onSelectCert(cert)}

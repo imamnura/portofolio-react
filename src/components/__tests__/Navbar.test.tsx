@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { Navbar } from "../Navbar";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { DICT } from "../../constants/dictionary";
+import { Navbar } from "../Navbar";
 
 vi.mock("framer-motion", () => ({
   motion: {
@@ -13,8 +13,8 @@ vi.mock("framer-motion", () => ({
 }));
 
 const navLinks = [
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
+  { name: "About", id: "about" as const },
+  { name: "Skills", id: "skills" as const },
 ];
 
 const defaultProps = {
@@ -26,6 +26,9 @@ const defaultProps = {
   isDark: false,
   setIsDark: vi.fn(),
   navLinks,
+  activeSection: null,
+  onNavigate: vi.fn(),
+  onGoHome: vi.fn(),
   t: DICT.en,
   onOpenContact: vi.fn(),
 };
@@ -33,7 +36,7 @@ const defaultProps = {
 describe("Navbar", () => {
   it("renders nav links in desktop menu", () => {
     render(<Navbar {...defaultProps} />);
-    const links = screen.getAllByRole("link", { name: "About" });
+    const links = screen.getAllByRole("button", { name: "About" });
     expect(links.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -101,13 +104,27 @@ describe("Navbar", () => {
 
   it("shows mobile menu links when mobileMenuOpen is true", () => {
     render(<Navbar {...defaultProps} mobileMenuOpen={true} />);
-    const aboutLinks = screen.getAllByRole("link", { name: "About" });
+    const aboutLinks = screen.getAllByRole("button", { name: "About" });
     expect(aboutLinks.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("calls onNavigate when a nav link is clicked", () => {
+    const onNavigate = vi.fn();
+    render(<Navbar {...defaultProps} onNavigate={onNavigate} />);
+    fireEvent.click(screen.getAllByRole("button", { name: "About" })[0]);
+    expect(onNavigate).toHaveBeenCalledWith("about");
+  });
+
+  it("calls onGoHome when logo is clicked", () => {
+    const onGoHome = vi.fn();
+    render(<Navbar {...defaultProps} onGoHome={onGoHome} />);
+    fireEvent.click(screen.getByRole("button", { name: DICT.en.a11y.home }));
+    expect(onGoHome).toHaveBeenCalled();
   });
 
   it("home link has correct aria-label", () => {
     render(<Navbar {...defaultProps} />);
-    expect(screen.getByRole("link", { name: DICT.en.a11y.home })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: DICT.en.a11y.home })).toBeInTheDocument();
   });
 
   it("applies scrolled styles when isScrolled is true", () => {

@@ -11,13 +11,7 @@ type GithubSectionProps = {
   t: Dictionary;
 };
 
-export function GithubSection({
-  githubUrl,
-  username,
-  chartColor,
-  isDark,
-  t,
-}: GithubSectionProps) {
+export function GithubSection({ githubUrl, username, chartColor, isDark, t }: GithubSectionProps) {
   return (
     <section className="py-16 sm:py-24 px-3 sm:px-4 md:px-8">
       <div className="max-w-5xl mx-auto text-center">

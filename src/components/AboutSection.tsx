@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Award, Briefcase, Code2, GraduationCap, Terminal } from "lucide-react";
-import type { Profile } from "../types/portfolio";
 import type { Dictionary, Lang } from "../constants/dictionary";
+import type { Profile } from "../types/portfolio";
 import { SectionHeading } from "./SectionHeading";
 
 type AboutSectionProps = {
@@ -41,10 +41,7 @@ export function AboutSection({ profile, lang, t }: AboutSectionProps) {
                 whileHover={{ y: -5 }}
                 className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col justify-center min-w-0"
               >
-                <stat.icon
-                  className="text-blue-500 mb-4 opacity-80"
-                  size={28}
-                />
+                <stat.icon className="text-blue-500 mb-4 opacity-80" size={28} />
                 <div className="text-[0.65rem] sm:text-sm font-bold text-slate-400 dark:text-slate-500 mb-1 uppercase tracking-wider leading-tight">
                   {stat.label}
                 </div>

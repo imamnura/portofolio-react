@@ -1,2 +1,2 @@
-export { DICT, type Lang, type Dictionary } from "./dictionary";
 export { DATA } from "./data";
+export { DICT, type Dictionary, type Lang } from "./dictionary";

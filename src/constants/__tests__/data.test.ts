@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { DATA } from "../data";
 
 describe("DATA.profile", () => {
@@ -62,14 +62,22 @@ describe("DATA.experiences", () => {
       expect(exp.role, `experience[${i}].role`).toBeTruthy();
       expect(exp.periodEn, `experience[${i}].periodEn`).toBeTruthy();
       expect(exp.periodId, `experience[${i}].periodId`).toBeTruthy();
-      expect(exp.highlightsEn.length, `experience[${i}] should have English highlights`).toBeGreaterThan(0);
-      expect(exp.highlightsId.length, `experience[${i}] should have Indonesian highlights`).toBeGreaterThan(0);
+      expect(
+        exp.highlightsEn.length,
+        `experience[${i}] should have English highlights`,
+      ).toBeGreaterThan(0);
+      expect(
+        exp.highlightsId.length,
+        `experience[${i}] should have Indonesian highlights`,
+      ).toBeGreaterThan(0);
     });
   });
 
   it("highlights arrays have matching lengths per experience", () => {
     DATA.experiences.forEach((exp, i) => {
-      expect(exp.highlightsEn.length, `experience[${i}] highlights length mismatch`).toBe(exp.highlightsId.length);
+      expect(exp.highlightsEn.length, `experience[${i}] highlights length mismatch`).toBe(
+        exp.highlightsId.length,
+      );
     });
   });
 });

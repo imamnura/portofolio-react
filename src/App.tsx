@@ -1,29 +1,39 @@
-import { useState, useEffect, useCallback, type FormEvent } from "react";
 import { AnimatePresence } from "framer-motion";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
+import { AboutSection } from "./components/AboutSection";
+import { BackgroundBlobs } from "./components/BackgroundBlobs";
+import { CertificationModal } from "./components/CertificationModal";
+import { ContactModal, type ContactStatus } from "./components/ContactModal";
+import { EducationCertSection } from "./components/EducationCertSection";
+import { ExperienceSection } from "./components/ExperienceSection";
+import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
+import { GithubSection } from "./components/GithubSection";
+import { HeroSection } from "./components/HeroSection";
+import { Navbar, type SectionId } from "./components/Navbar";
+import { ProjectModal } from "./components/ProjectModal";
+import { ProjectsSection } from "./components/ProjectsSection";
+import { SectionPanel } from "./components/SectionPanel";
+import { SkillsSection } from "./components/SkillsSection";
 import { DATA, DICT, type Lang } from "./constants";
 import type { Certification, Project } from "./types/portfolio";
-import { BackgroundBlobs } from "./components/BackgroundBlobs";
-import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
-import { Navbar } from "./components/Navbar";
-import { HeroSection } from "./components/HeroSection";
-import { AboutSection } from "./components/AboutSection";
-import { SkillsSection } from "./components/SkillsSection";
-import { ExperienceSection } from "./components/ExperienceSection";
-import { ProjectsSection } from "./components/ProjectsSection";
-import { GithubSection } from "./components/GithubSection";
-import { EducationCertSection } from "./components/EducationCertSection";
-import { Footer } from "./components/Footer";
-import { ProjectModal } from "./components/ProjectModal";
-import { CertificationModal } from "./components/CertificationModal";
-import {
-  ContactModal,
-  type ContactStatus,
-} from "./components/ContactModal";
 
 const GITHUB_CHART_COLOR = "2563EB";
 
+function getSectionTitle(id: SectionId, dict: (typeof DICT)[Lang]) {
+  switch (id) {
+    case "about":
+      return dict.about.title;
+    case "skills":
+      return dict.skills.title;
+    case "experience":
+      return dict.experience.title;
+    case "projects":
+      return dict.projects.title;
+  }
+}
+
 export default function App() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<SectionId | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState<Lang>("id");
   const [isDark, setIsDark] = useState(false);
@@ -34,12 +44,7 @@ export default function App() {
   const [contactStatus, setContactStatus] = useState<ContactStatus>("idle");
 
   const t = DICT[lang];
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const isPanelOpen = activeSection !== null;
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark);
@@ -48,6 +53,13 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = lang === "id" ? "id" : "en";
   }, [lang]);
+
+  useEffect(() => {
+    document.body.style.overflow = isPanelOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isPanelOpen]);
 
   const handleContactSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
@@ -61,20 +73,71 @@ export default function App() {
     }, 1500);
   }, []);
 
+  const handleNavigate = useCallback((id: SectionId) => {
+    setActiveSection(id);
+  }, []);
+
+  const handleGoHome = useCallback(() => {
+    setActiveSection(null);
+    setMobileMenuOpen(false);
+  }, []);
+
   const navLinks = [
-    { name: t.nav.about, href: "#about" },
-    { name: t.nav.skills, href: "#skills" },
-    { name: t.nav.experience, href: "#experience" },
-    { name: t.nav.projects, href: "#projects" },
+    { name: t.nav.about, id: "about" as const },
+    { name: t.nav.skills, id: "skills" as const },
+    { name: t.nav.experience, id: "experience" as const },
+    { name: t.nav.projects, id: "projects" as const },
   ];
 
+  const sectionTitle = activeSection !== null ? getSectionTitle(activeSection, t) : "";
+
+  const renderPanelContent = () => {
+    switch (activeSection) {
+      case "about":
+        return (
+          <>
+            <AboutSection profile={DATA.profile} lang={lang} t={t} />
+            <EducationCertSection
+              certifications={DATA.certifications}
+              t={t}
+              onSelectCert={setSelectedCert}
+            />
+          </>
+        );
+      case "skills":
+        return <SkillsSection skills={DATA.skills} t={t} />;
+      case "experience":
+        return <ExperienceSection experiences={DATA.experiences} lang={lang} t={t} />;
+      case "projects":
+        return (
+          <>
+            <ProjectsSection
+              projects={DATA.projects}
+              lang={lang}
+              t={t}
+              onSelectProject={setSelectedProject}
+            />
+            <GithubSection
+              githubUrl={DATA.profile.github}
+              username={DATA.profile.githubUsername}
+              chartColor={GITHUB_CHART_COLOR}
+              isDark={isDark}
+              t={t}
+            />
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 transition-colors duration-300 selection:bg-blue-200 selection:text-blue-900 sf-pro-font">
+    <div className="h-screen overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 transition-colors duration-300 selection:bg-blue-200 selection:text-blue-900 sf-pro-font">
       <FloatingWhatsApp waNumber={DATA.profile.wa} />
       <BackgroundBlobs />
 
       <Navbar
-        isScrolled={isScrolled}
+        isScrolled={isPanelOpen}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
         lang={lang}
@@ -82,40 +145,30 @@ export default function App() {
         isDark={isDark}
         setIsDark={setIsDark}
         navLinks={navLinks}
+        activeSection={activeSection}
+        onNavigate={handleNavigate}
+        onGoHome={handleGoHome}
         t={t}
         onOpenContact={() => setIsContactModalOpen(true)}
       />
 
-      <main className="relative z-10">
-        <HeroSection profile={DATA.profile} t={t} />
-        <AboutSection profile={DATA.profile} lang={lang} t={t} />
-        <SkillsSection skills={DATA.skills} t={t} />
-        <ExperienceSection
-          experiences={DATA.experiences}
-          lang={lang}
+      <main className="relative z-10 h-full">
+        <HeroSection
+          profile={DATA.profile}
           t={t}
+          onViewExperience={() => handleNavigate("experience")}
         />
-        <ProjectsSection
-          projects={DATA.projects}
-          lang={lang}
-          t={t}
-          onSelectProject={setSelectedProject}
-        />
-        <GithubSection
-          githubUrl={DATA.profile.github}
-          username={DATA.profile.githubUsername}
-          chartColor={GITHUB_CHART_COLOR}
-          isDark={isDark}
-          t={t}
-        />
-        <EducationCertSection
-          certifications={DATA.certifications}
-          t={t}
-          onSelectCert={setSelectedCert}
-        />
-      </main>
 
-      <Footer profile={DATA.profile} t={t} navLinks={navLinks} />
+        <SectionPanel
+          isOpen={isPanelOpen}
+          sectionKey={activeSection}
+          onClose={handleGoHome}
+          title={sectionTitle}
+          t={t}
+        >
+          {renderPanelContent()}
+        </SectionPanel>
+      </main>
 
       <AnimatePresence>
         {selectedProject && (

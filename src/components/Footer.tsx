@@ -1,16 +1,17 @@
 import { Code2, Github, Globe, Linkedin, Mail, MapPin } from "lucide-react";
-import type { Profile } from "../types/portfolio";
 import type { Dictionary } from "../constants/dictionary";
-import type { NavLinkItem } from "./Navbar";
+import type { Profile } from "../types/portfolio";
 import { WhatsAppIcon } from "./icons/WhatsAppIcon";
+import type { NavLinkItem } from "./Navbar";
 
 type FooterProps = {
   profile: Profile;
   t: Dictionary;
   navLinks: NavLinkItem[];
+  onNavigate?: (id: NavLinkItem["id"]) => void;
 };
 
-export function Footer({ profile, t, navLinks }: FooterProps) {
+export function Footer({ profile, t, navLinks, onNavigate }: FooterProps) {
   return (
     <footer className="bg-slate-950 text-slate-400 py-12 sm:py-16 px-3 sm:px-4 md:px-8 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-30" />
@@ -54,9 +55,7 @@ export function Footer({ profile, t, navLinks }: FooterProps) {
         </div>
 
         <div>
-          <h4 className="text-white font-bold mb-6 tracking-wide uppercase">
-            {t.footer.contact}
-          </h4>
+          <h4 className="text-white font-bold mb-6 tracking-wide uppercase">{t.footer.contact}</h4>
           <ul className="space-y-4 font-medium">
             <li className="min-w-0">
               <a
@@ -80,11 +79,7 @@ export function Footer({ profile, t, navLinks }: FooterProps) {
               </a>
             </li>
             <li className="flex items-center gap-3">
-              <MapPin
-                size={18}
-                className="text-slate-500 shrink-0"
-                aria-hidden
-              />
+              <MapPin size={18} className="text-slate-500 shrink-0" aria-hidden />
               <span>
                 <span className="sr-only">{t.a11y.locationInfo}: </span>
                 {profile.location}
@@ -94,18 +89,26 @@ export function Footer({ profile, t, navLinks }: FooterProps) {
         </div>
 
         <div>
-          <h4 className="text-white font-bold mb-6 tracking-wide uppercase">
-            {t.footer.nav}
-          </h4>
+          <h4 className="text-white font-bold mb-6 tracking-wide uppercase">{t.footer.nav}</h4>
           <ul className="space-y-3 font-medium">
             {navLinks.map((link) => (
-              <li key={link.name}>
-                <a
-                  href={link.href}
-                  className="hover:text-white hover:translate-x-1 transition-all inline-block"
-                >
-                  {link.name}
-                </a>
+              <li key={link.id}>
+                {onNavigate ? (
+                  <button
+                    type="button"
+                    onClick={() => onNavigate(link.id)}
+                    className="hover:text-white hover:translate-x-1 transition-all inline-block text-left"
+                  >
+                    {link.name}
+                  </button>
+                ) : (
+                  <a
+                    href={`#${link.id}`}
+                    className="hover:text-white hover:translate-x-1 transition-all inline-block"
+                  >
+                    {link.name}
+                  </a>
+                )}
               </li>
             ))}
           </ul>
@@ -117,13 +120,7 @@ export function Footer({ profile, t, navLinks }: FooterProps) {
           &copy; {new Date().getFullYear()} {profile.name}. All rights reserved.
         </p>
         <p className="mt-2 md:mt-0 flex items-center gap-1">
-          Built with{" "}
-          <Code2
-            size={14}
-            className="text-blue-500"
-            aria-hidden
-          />{" "}
-          in React & Tailwind
+          Built with <Code2 size={14} className="text-blue-500" aria-hidden /> in React & Tailwind
         </p>
       </div>
     </footer>

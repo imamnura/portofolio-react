@@ -1,22 +1,16 @@
 import { motion } from "framer-motion";
-import {
-  ChevronRight,
-  Download,
-  Github,
-  Linkedin,
-  Mail,
-  MapPin,
-} from "lucide-react";
-import type { Profile } from "../types/portfolio";
+import { ChevronRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import type { Dictionary } from "../constants/dictionary";
+import type { Profile } from "../types/portfolio";
 import { HeroCodeVisual } from "./HeroCodeVisual";
 
 type HeroSectionProps = {
   profile: Profile;
   t: Dictionary;
+  onViewExperience?: () => void;
 };
 
-export function HeroSection({ profile, t }: HeroSectionProps) {
+export function HeroSection({ profile, t, onViewExperience }: HeroSectionProps) {
   return (
     <section className="min-h-screen flex items-center pt-20 pb-10 px-3 sm:px-4 md:px-8 sm:pt-24">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -44,17 +38,32 @@ export function HeroSection({ profile, t }: HeroSectionProps) {
           </p>
 
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-12">
-            <a
-              href="#experience"
-              className="w-full sm:w-auto px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl hover:scale-105 hover:shadow-xl transition-all flex items-center justify-center gap-2 group"
-            >
-              {t.hero.viewExp}{" "}
-              <ChevronRight
-                size={18}
-                className="group-hover:translate-x-1 transition-transform"
-                aria-hidden
-              />
-            </a>
+            {onViewExperience ? (
+              <button
+                type="button"
+                onClick={onViewExperience}
+                className="w-full sm:w-auto px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl hover:scale-105 hover:shadow-xl transition-all flex items-center justify-center gap-2 group"
+              >
+                {t.hero.viewExp}{" "}
+                <ChevronRight
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                  aria-hidden
+                />
+              </button>
+            ) : (
+              <a
+                href="#experience"
+                className="w-full sm:w-auto px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl hover:scale-105 hover:shadow-xl transition-all flex items-center justify-center gap-2 group"
+              >
+                {t.hero.viewExp}{" "}
+                <ChevronRight
+                  size={18}
+                  className="group-hover:translate-x-1 transition-transform"
+                  aria-hidden
+                />
+              </a>
+            )}
 
             <a
               href={profile.cvUrl}
@@ -71,11 +80,7 @@ export function HeroSection({ profile, t }: HeroSectionProps) {
               aria-label={`${t.hero.linkedin} — ${profile.name}`}
               className="w-full sm:w-auto px-6 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-white font-bold rounded-2xl hover:scale-105 hover:shadow-lg transition-all flex items-center justify-center gap-2"
             >
-              <Linkedin
-                size={20}
-                className="text-blue-600 dark:text-blue-400"
-                aria-hidden
-              />{" "}
+              <Linkedin size={20} className="text-blue-600 dark:text-blue-400" aria-hidden />{" "}
               <span className="hidden sm:inline" aria-hidden="true">
                 {t.hero.linkedin}
               </span>
@@ -100,11 +105,7 @@ export function HeroSection({ profile, t }: HeroSectionProps) {
               <Mail size={24} aria-hidden />
             </a>
             <span className="flex items-center gap-2 text-xs sm:text-sm font-semibold px-3 py-2.5 sm:px-4 sm:py-3 bg-white dark:bg-slate-800 rounded-full shadow-sm max-w-full">
-              <MapPin
-                size={18}
-                className="text-red-500 shrink-0"
-                aria-hidden
-              />{" "}
+              <MapPin size={18} className="text-red-500 shrink-0" aria-hidden />{" "}
               <span className="text-left">{profile.location}</span>
             </span>
           </div>

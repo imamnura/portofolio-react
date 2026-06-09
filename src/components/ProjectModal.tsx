@@ -1,14 +1,8 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Code2, PlayCircle, X } from "lucide-react";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Code2,
-  PlayCircle,
-} from "lucide-react";
-import type { Project } from "../types/portfolio";
 import type { Dictionary, Lang } from "../constants/dictionary";
+import type { Project } from "../types/portfolio";
 
 type ProjectModalProps = {
   project: Project;
@@ -27,9 +21,7 @@ export function ProjectModal({ project, onClose, lang, t }: ProjectModalProps) {
 
   const prevImg = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setImgIndex((prev) =>
-      prev === 0 ? project.images.length - 1 : prev - 1,
-    );
+    setImgIndex((prev) => (prev === 0 ? project.images.length - 1 : prev - 1));
   };
 
   return (
@@ -93,10 +85,10 @@ export function ProjectModal({ project, onClose, lang, t }: ProjectModalProps) {
               </button>
 
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                {project.images.map((_, idx) => (
+                {project.images.map((image, idx) => (
                   <button
                     type="button"
-                    key={idx}
+                    key={image}
                     onClick={() => setImgIndex(idx)}
                     aria-label={`${t.a11y.goToSlide} ${idx + 1} ${t.a11y.slideOf} ${project.images.length}`}
                     aria-current={idx === imgIndex ? "true" : undefined}

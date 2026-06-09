@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { DICT } from "../dictionary";
 
 describe("DICT", () => {
@@ -7,7 +7,19 @@ describe("DICT", () => {
     expect(DICT).toHaveProperty("en");
   });
 
-  const topLevelKeys = ["nav", "hero", "about", "skills", "experience", "projects", "github", "eduCert", "footer", "contactModal", "a11y"];
+  const topLevelKeys = [
+    "nav",
+    "hero",
+    "about",
+    "skills",
+    "experience",
+    "projects",
+    "github",
+    "eduCert",
+    "footer",
+    "contactModal",
+    "a11y",
+  ];
 
   topLevelKeys.forEach((key) => {
     it(`both languages have '${key}' section`, () => {
@@ -33,7 +45,14 @@ describe("DICT", () => {
   });
 
   it("a11y section has all required accessibility keys in both languages", () => {
-    const a11yKeys = ["home", "githubProfile", "sendEmail", "closeModal", "previousImage", "nextImage"];
+    const a11yKeys = [
+      "home",
+      "githubProfile",
+      "sendEmail",
+      "closeModal",
+      "previousImage",
+      "nextImage",
+    ];
     a11yKeys.forEach((key) => {
       expect(DICT.id.a11y).toHaveProperty(key);
       expect(DICT.en.a11y).toHaveProperty(key);
