@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { CheckCircle, Send, X } from "lucide-react";
 import type { FormEvent } from "react";
 import type { Dictionary } from "../constants/dictionary";
+import { Sharingan } from "./uchiha/Sharingan";
 
 export type ContactStatus = "idle" | "submitting" | "success";
 
@@ -12,32 +13,42 @@ type ContactModalProps = {
   onSubmit: (e: FormEvent) => void;
 };
 
+const labelClass = "mb-2 block font-mono text-xs font-bold uppercase tracking-widest text-ink";
+const fieldClass =
+  "w-full border-[3px] border-ink bg-paper px-4 py-3 font-medium text-ink outline-none transition-shadow placeholder:text-ink-soft/60 focus:shadow-[4px_4px_0_0_var(--blood)] disabled:opacity-60";
+
 export function ContactModal({ onClose, t, contactStatus, onSubmit }: ContactModalProps) {
+  const isSubmitting = contactStatus === "submitting";
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md overflow-y-auto"
+      className="halftone-red fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#0b0b0b]/80 p-3 sm:p-4"
       onClick={() => {
-        if (contactStatus !== "submitting") onClose();
+        if (!isSubmitting) onClose();
       }}
     >
       <motion.div
-        initial={{ scale: 0.95, opacity: 0, y: 30 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.95, opacity: 0, y: 30 }}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t.contactModal.title}
+        initial={{ scale: 0.9, rotate: -2, opacity: 0 }}
+        animate={{ scale: 1, rotate: 0, opacity: 1 }}
+        exit={{ scale: 0.9, rotate: 2, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 380, damping: 24 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-slate-800 w-full max-w-xl max-h-[min(100dvh-2rem,900px)] overflow-y-auto custom-scrollbar rounded-2xl sm:rounded-[2.5rem] p-6 sm:p-8 md:p-10 shadow-2xl relative border border-slate-100 dark:border-slate-700 my-4 sm:my-8"
+        className="brutal brutal-blood custom-scrollbar relative my-4 max-h-[min(100dvh-2rem,900px)] w-full max-w-xl overflow-y-auto bg-card p-6 sm:my-8 sm:p-8 md:p-10"
       >
-        {contactStatus !== "submitting" && (
+        {!isSubmitting && (
           <button
             type="button"
             onClick={onClose}
             aria-label={t.contactModal.close}
-            className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors"
+            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center border-[3px] border-ink bg-paper text-ink transition-colors hover:bg-blood hover:text-white"
           >
-            <X size={24} aria-hidden />
+            <X size={22} aria-hidden />
           </button>
         )}
 
@@ -45,92 +56,81 @@ export function ContactModal({ onClose, t, contactStatus, onSubmit }: ContactMod
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-12 flex flex-col items-center"
+            className="flex flex-col items-center py-12 text-center"
           >
-            <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-inner">
-              <CheckCircle size={40} />
+            <div className="brutal mb-6 flex h-20 w-20 items-center justify-center bg-leaf text-white">
+              <CheckCircle size={40} aria-hidden />
             </div>
-            <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-3">
+            <h3 className="mb-3 font-display text-3xl uppercase text-ink">
               {t.contactModal.thankYou}
             </h3>
-            <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
-              {t.contactModal.success}
-            </p>
+            <p className="text-lg font-medium text-ink-soft">{t.contactModal.success}</p>
           </motion.div>
         ) : (
           <>
-            <div className="mb-8">
-              <h3 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">
+            <div className="mb-8 pr-10">
+              <h3 className="mb-4 font-display text-3xl uppercase leading-none tracking-tight text-ink md:text-4xl">
                 {t.contactModal.title}
               </h3>
-              <p className="text-slate-600 dark:text-slate-400 font-medium leading-relaxed text-sm md:text-base">
+              <p className="border-l-8 border-blood pl-4 text-sm font-medium leading-relaxed text-ink-soft md:text-base">
                 {t.contactModal.desc}
               </p>
             </div>
 
             <form onSubmit={onSubmit} className="space-y-5">
               <div>
-                <label
-                  htmlFor="contact-name"
-                  className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2"
-                >
+                <label htmlFor="contact-name" className={labelClass}>
                   {t.contactModal.name}
                 </label>
                 <input
                   id="contact-name"
                   type="text"
                   required
-                  disabled={contactStatus === "submitting"}
-                  className="w-full px-5 py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-800 dark:text-white font-medium disabled:opacity-60"
+                  disabled={isSubmitting}
+                  className={fieldClass}
                   placeholder="John Doe"
                 />
               </div>
               <div>
-                <label
-                  htmlFor="contact-email"
-                  className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2"
-                >
+                <label htmlFor="contact-email" className={labelClass}>
                   {t.contactModal.email}
                 </label>
                 <input
                   id="contact-email"
                   type="email"
                   required
-                  disabled={contactStatus === "submitting"}
-                  className="w-full px-5 py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all text-slate-800 dark:text-white font-medium disabled:opacity-60"
+                  disabled={isSubmitting}
+                  className={fieldClass}
                   placeholder="john@example.com"
                 />
               </div>
               <div>
-                <label
-                  htmlFor="contact-message"
-                  className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2"
-                >
+                <label htmlFor="contact-message" className={labelClass}>
                   {t.contactModal.message}
                 </label>
                 <textarea
                   id="contact-message"
                   required
                   rows={4}
-                  disabled={contactStatus === "submitting"}
-                  className="w-full px-5 py-3.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none text-slate-800 dark:text-white font-medium custom-scrollbar disabled:opacity-60"
+                  disabled={isSubmitting}
+                  className={`${fieldClass} custom-scrollbar resize-none`}
                   placeholder="Hello Imam, I have a project..."
                 />
               </div>
 
               <button
                 type="submit"
-                disabled={contactStatus === "submitting"}
-                className="w-full pt-2 flex items-center justify-center gap-2 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:shadow-none"
+                disabled={isSubmitting}
+                className="brutal press flex w-full items-center justify-center gap-3 bg-blood py-4 font-mono text-sm font-bold uppercase tracking-wider text-white disabled:cursor-not-allowed disabled:opacity-80"
               >
-                {contactStatus === "submitting" ? (
+                {isSubmitting ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <Sharingan spin className="h-6 w-6" />
                     {t.contactModal.sending}
                   </>
                 ) : (
                   <>
-                    <Send size={18} /> {t.contactModal.send}
+                    <Send size={18} aria-hidden /> {t.contactModal.send}
                   </>
                 )}
               </button>

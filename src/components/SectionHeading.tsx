@@ -12,17 +12,15 @@ export function SectionHeading({ title, icon: Icon }: SectionHeadingProps) {
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      className="flex flex-wrap items-center gap-3 mb-8 sm:mb-10"
+      className="mb-8 flex items-center gap-3 sm:mb-10"
     >
-      <div
-        className="p-3 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-xl shadow-inner"
-        aria-hidden
-      >
+      <div className="brutal-sm shrink-0 bg-blood p-2.5 text-white" aria-hidden>
         <Icon size={24} />
       </div>
-      <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white min-w-0">
+      <h2 className="min-w-0 font-display text-2xl uppercase leading-tight tracking-tight text-ink sm:text-3xl">
         {title}
       </h2>
+      <span className="hidden h-1.5 min-w-8 flex-1 bg-ink sm:block" />
     </motion.div>
   );
 }

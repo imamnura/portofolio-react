@@ -1,13 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Languages, Menu, Moon, Sun, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
+import { Link, NavLink } from "react-router";
 import type { Dictionary, Lang } from "../constants/dictionary";
+import { getPageNumber, PAGE_PATH, type PageId } from "../constants/routes";
+import { UchihaCrest } from "./uchiha/UchihaCrest";
 
-export type SectionId = "about" | "skills" | "experience" | "projects";
-
-export type NavLinkItem = { name: string; id: SectionId };
+export type NavLinkItem = { name: string; id: PageId };
 
 type NavbarProps = {
-  isScrolled: boolean;
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
   lang: Lang;
@@ -15,15 +15,14 @@ type NavbarProps = {
   isDark: boolean;
   setIsDark: (dark: boolean) => void;
   navLinks: NavLinkItem[];
-  activeSection: SectionId | null;
-  onNavigate: (id: SectionId) => void;
-  onGoHome: () => void;
   t: Dictionary;
   onOpenContact: () => void;
 };
 
+const iconButton =
+  "brutal-sm press flex h-10 w-10 items-center justify-center bg-card text-ink font-mono text-sm font-bold";
+
 export function Navbar({
-  isScrolled,
   mobileMenuOpen,
   setMobileMenuOpen,
   lang,
@@ -31,124 +30,78 @@ export function Navbar({
   isDark,
   setIsDark,
   navLinks,
-  activeSection,
-  onNavigate,
-  onGoHome,
   t,
   onOpenContact,
 }: NavbarProps) {
   const toggleLang = () => setLang(lang === "id" ? "en" : "id");
+  const closeMenu = () => setMobileMenuOpen(false);
 
-  const handleNavigate = (id: SectionId) => {
-    onNavigate(id);
-    setMobileMenuOpen(false);
-  };
-
-  const navLinkClass = (id: SectionId) =>
-    `text-sm font-semibold transition-colors ${
-      activeSection === id
-        ? "text-blue-600 dark:text-blue-400"
-        : "text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+  const desktopLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `brutal-sm press flex items-center gap-1.5 px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider ${
+      isActive ? "bg-blood text-white" : "bg-card text-ink"
     }`;
 
   return (
     <nav
-      className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-sm py-3" : "bg-transparent py-5"}`}
+      aria-label={t.a11y.mainNav}
+      className="sticky top-0 z-40 border-b-4 border-ink bg-paper/95 backdrop-blur-sm"
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 flex justify-between items-center gap-3 relative z-10 min-h-[3.25rem] sm:min-h-0">
-        <button
-          type="button"
-          onClick={onGoHome}
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <Link
+          to="/"
+          onClick={closeMenu}
           aria-label={t.a11y.home}
-          className="shrink-0 flex items-center text-2xl font-black text-slate-800 dark:text-white tracking-tighter hover:opacity-80 transition-opacity"
+          className="group flex shrink-0 items-center gap-2.5"
         >
-          <img
-            src="/logo.svg"
-            alt=""
-            width={350}
-            height={100}
-            className="h-9 w-auto max-h-10 sm:h-10 sm:max-h-11 md:h-12 md:max-h-14 object-contain object-left"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </button>
+          <UchihaCrest className="h-10 w-auto transition-transform duration-300 group-hover:-rotate-12" />
+          <span className="font-display text-xl uppercase leading-none tracking-tight text-ink sm:text-2xl">
+            Imamnura<span className="text-blood">.</span>
+          </span>
+        </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden items-center gap-2 lg:flex">
           {navLinks.map((link) => (
-            <button
-              key={link.id}
-              type="button"
-              onClick={() => handleNavigate(link.id)}
-              className={navLinkClass(link.id)}
-              aria-current={activeSection === link.id ? "page" : undefined}
-            >
-              {link.name}
-            </button>
-          ))}
-
-          <div className="flex items-center gap-4 border-l border-slate-200 dark:border-slate-700 pl-6">
-            <button
-              type="button"
-              onClick={toggleLang}
-              className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors group relative"
-              aria-label="Toggle Language"
-            >
-              <Languages
-                size={18}
-                className="text-slate-600 dark:text-slate-300 group-hover:text-blue-600"
-              />
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                {lang.toUpperCase()}
+            <NavLink key={link.id} to={PAGE_PATH[link.id]} className={desktopLinkClass}>
+              <span className="opacity-60" aria-hidden="true">
+                {getPageNumber(link.id)}
               </span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsDark(!isDark)}
-              className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-              aria-label="Toggle Theme"
-            >
-              {isDark ? (
-                <Sun size={18} className="text-amber-400" />
-              ) : (
-                <Moon size={18} className="text-slate-600" />
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={onOpenContact}
-              className="px-5 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all shadow-blue-500/30"
-            >
-              {t.nav.contact}
-            </button>
-          </div>
+              {link.name}
+            </NavLink>
+          ))}
         </div>
 
-        <div className="md:hidden flex items-center gap-4">
-          <button
-            type="button"
-            onClick={() => setIsDark(!isDark)}
-            className="p-2 text-slate-600 dark:text-slate-300"
-            aria-label="Toggle Theme"
-          >
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={toggleLang}
+            className={iconButton}
             aria-label="Toggle Language"
-            className="font-bold text-sm text-slate-600 dark:text-slate-300"
           >
             {lang.toUpperCase()}
           </button>
           <button
             type="button"
-            className="p-2 text-slate-600 dark:text-slate-300"
+            onClick={() => setIsDark(!isDark)}
+            className={iconButton}
+            aria-label="Toggle Theme"
+          >
+            {isDark ? <Sun size={18} aria-hidden /> : <Moon size={18} aria-hidden />}
+          </button>
+          <button
+            type="button"
+            onClick={onOpenContact}
+            className="brutal-sm press hidden bg-ink px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider text-paper sm:block"
+          >
+            {t.nav.contact}
+          </button>
+          <button
+            type="button"
+            className={`${iconButton} lg:hidden`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-label="Menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={20} aria-hidden /> : <Menu size={20} aria-hidden />}
           </button>
         </div>
       </div>
@@ -159,31 +112,33 @@ export function Navbar({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-slate-900 shadow-xl border-t border-slate-100 dark:border-slate-800 overflow-hidden z-40"
+            className="overflow-hidden border-t-4 border-ink bg-paper lg:hidden"
           >
-            <div className="py-4 px-4 flex flex-col gap-4">
+            <div className="flex flex-col gap-3 px-4 py-5 sm:px-6">
               {navLinks.map((link) => (
-                <button
+                <NavLink
                   key={link.id}
-                  type="button"
-                  onClick={() => handleNavigate(link.id)}
-                  className={`text-left font-bold py-2 px-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                    activeSection === link.id
-                      ? "text-blue-600 dark:text-blue-400"
-                      : "text-slate-600 dark:text-slate-300 hover:text-blue-600"
-                  }`}
-                  aria-current={activeSection === link.id ? "page" : undefined}
+                  to={PAGE_PATH[link.id]}
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    `brutal-sm press flex items-center justify-between px-4 py-3 font-display text-xl uppercase ${
+                      isActive ? "bg-blood text-white" : "bg-card text-ink"
+                    }`
+                  }
                 >
                   {link.name}
-                </button>
+                  <span className="font-jp text-lg font-black" aria-hidden="true">
+                    {t.pages[link.id].kanji}
+                  </span>
+                </NavLink>
               ))}
               <button
                 type="button"
                 onClick={() => {
                   onOpenContact();
-                  setMobileMenuOpen(false);
+                  closeMenu();
                 }}
-                className="mt-2 text-center px-5 py-3 bg-blue-600 text-white font-semibold rounded-lg mx-4"
+                className="brutal-sm press mt-2 bg-ink px-4 py-3 font-mono text-sm font-bold uppercase tracking-wider text-paper"
               >
                 {t.nav.contact}
               </button>

@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import { Briefcase } from "lucide-react";
+import { MapPin } from "lucide-react";
 import type { Dictionary, Lang } from "../constants/dictionary";
 import type { Experience } from "../types/portfolio";
-import { SectionHeading } from "./SectionHeading";
 
 type ExperienceSectionProps = {
   experiences: Experience[];
@@ -12,57 +11,73 @@ type ExperienceSectionProps = {
 
 export function ExperienceSection({ experiences, lang, t }: ExperienceSectionProps) {
   return (
-    <section id="experience" className="py-16 sm:py-24 px-3 sm:px-4 md:px-8">
-      <div className="max-w-4xl mx-auto">
-        <SectionHeading title={t.experience.title} icon={Briefcase} />
+    <section id="experience" className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <div className="relative">
+        <span className="stripes absolute bottom-0 left-3 top-2 w-2 sm:left-5" aria-hidden="true" />
+        <ol className="relative m-0 list-none space-y-10 p-0 pl-10 sm:pl-14">
+          {experiences.map((exp, index) => {
+            const period = lang === "id" ? exp.periodId : exp.periodEn;
+            const isActive = exp.periodEn.includes("Present");
+            const highlights = lang === "id" ? exp.highlightsId : exp.highlightsEn;
 
-        <div className="space-y-8 mt-12 relative">
-          <div className="absolute left-[27px] md:left-[140px] top-4 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-transparent rounded-full opacity-20" />
+            return (
+              <motion.li
+                key={`${exp.company}-${exp.periodEn}`}
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ delay: index * 0.08, type: "spring", stiffness: 200, damping: 22 }}
+                className="relative"
+              >
+                <span
+                  className={`absolute left-[-2.35rem] top-6 h-6 w-6 rotate-45 border-[3px] border-ink sm:left-[-2.85rem] ${
+                    isActive ? "bg-blood" : "bg-card"
+                  }`}
+                  aria-hidden="true"
+                />
 
-          {experiences.map((exp, index) => (
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              key={`${exp.company}-${exp.periodEn}`}
-              className="relative pl-16 md:pl-0 md:flex gap-12 group"
-            >
-              <div className="absolute left-0 md:relative md:w-[130px] shrink-0 pt-2 flex flex-col md:items-end z-10">
-                <span className="text-sm font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full md:bg-transparent md:px-0 md:py-0 inline-block">
-                  {lang === "id" ? exp.periodId.split(" - ")[0] : exp.periodEn.split(" - ")[0]}
-                </span>
-                <span className="text-xs font-bold text-slate-400 mt-1 hidden md:block">
-                  {lang === "id" ? exp.periodId.split(" - ")[1] : exp.periodEn.split(" - ")[1]}
-                </span>
-                <div className="absolute left-[20px] md:left-auto md:-right-[29px] top-6 md:top-3 w-5 h-5 rounded-full bg-white dark:bg-slate-900 border-4 border-blue-500 group-hover:scale-150 group-hover:bg-blue-100 transition-all shadow-md" />
-              </div>
-
-              <div className="flex-1 bg-white dark:bg-slate-800 rounded-3xl sm:rounded-[2rem] p-5 sm:p-8 border border-slate-100 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden min-w-0">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 dark:bg-slate-700/30 rounded-full blur-3xl -mr-10 -mt-10" />
-                <div className="relative z-10">
-                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-1 break-words">
-                    {exp.role}
-                  </h3>
-                  <div className="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400 mb-6 break-words">
-                    {exp.company} • {exp.location}
-                  </div>
-
-                  <ul className="m-0 list-none space-y-4 p-0">
-                    {(lang === "id" ? exp.highlightsId : exp.highlightsEn).map((item) => (
-                      <li
-                        key={item}
-                        className="relative pl-6 font-medium leading-relaxed text-slate-600 before:absolute before:left-0 before:top-[0.55rem] before:h-1.5 before:w-1.5 before:shrink-0 before:rounded-full before:bg-slate-300 before:transition-colors before:content-[''] dark:text-slate-300 dark:before:bg-slate-600 group-hover:before:bg-blue-400 dark:group-hover:before:bg-blue-400"
+                <article className="brutal press bg-card">
+                  <header className="flex flex-wrap items-center justify-between gap-2 border-b-[3px] border-ink bg-paper-2 px-4 py-2.5 font-mono text-xs font-bold uppercase tracking-wider text-ink sm:px-6">
+                    <span>
+                      {t.experience.mission} {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span>{period}</span>
+                      <span
+                        className={`px-2 py-0.5 ${isActive ? "bg-blood text-white" : "bg-ink text-paper"}`}
                       >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                        {isActive ? t.experience.active : t.experience.done}
+                      </span>
+                    </span>
+                  </header>
+
+                  <div className="p-5 sm:p-8">
+                    <h2 className="font-display text-2xl uppercase leading-tight text-ink wrap-break-word sm:text-3xl">
+                      {exp.role}
+                    </h2>
+                    <p className="mb-6 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-bold text-blood">
+                      <span className="text-lg">{exp.company}</span>
+                      <span className="flex items-center gap-1 font-mono text-xs uppercase text-ink-soft">
+                        <MapPin size={14} aria-hidden /> {exp.location}
+                      </span>
+                    </p>
+
+                    <ul className="m-0 list-none space-y-3 p-0">
+                      {highlights.map((item) => (
+                        <li
+                          key={item}
+                          className="relative pl-7 font-medium leading-relaxed text-ink-soft before:absolute before:left-0 before:top-1 before:font-bold before:text-blood before:content-['✦']"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </motion.li>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

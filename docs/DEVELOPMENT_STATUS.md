@@ -21,6 +21,7 @@ Personal portfolio website for **Imam Nur Arifin** — a Frontend Engineer with 
 | Framework | React | 19.3.x |
 | Build Tool | Vite | 8.x (Rolldown bundler) |
 | Styling | Tailwind CSS | 4.x |
+| Routing | React Router (HashRouter) | 8.x |
 | Animations | Framer Motion | 14.x |
 | Icons | Lucide React (brand icons: custom SVG) | 1.x |
 | Language | TypeScript | 7.0.x |

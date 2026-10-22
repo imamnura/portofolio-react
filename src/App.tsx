@@ -1,39 +1,49 @@
 import { AnimatePresence } from "framer-motion";
-import { type FormEvent, useCallback, useEffect, useState } from "react";
-import { AboutSection } from "./components/AboutSection";
-import { BackgroundBlobs } from "./components/BackgroundBlobs";
+import {
+  type FormEvent,
+  lazy,
+  type ReactNode,
+  Suspense,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import { CertificationModal } from "./components/CertificationModal";
 import { ContactModal, type ContactStatus } from "./components/ContactModal";
-import { EducationCertSection } from "./components/EducationCertSection";
-import { ExperienceSection } from "./components/ExperienceSection";
 import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
-import { GithubSection } from "./components/GithubSection";
-import { HeroSection } from "./components/HeroSection";
-import { Navbar, type SectionId } from "./components/Navbar";
+import { Footer } from "./components/Footer";
+import { Navbar, type NavLinkItem } from "./components/Navbar";
+import { PageTransition } from "./components/PageTransition";
 import { ProjectModal } from "./components/ProjectModal";
-import { ProjectsSection } from "./components/ProjectsSection";
-import { SectionPanel } from "./components/SectionPanel";
-import { SkillsSection } from "./components/SkillsSection";
+import { Sharingan } from "./components/uchiha/Sharingan";
 import { DATA, DICT, type Lang } from "./constants";
+import { PAGE_ORDER, PAGE_PATH } from "./constants/routes";
+import { HomePage } from "./pages/HomePage";
 import type { Certification, Project } from "./types/portfolio";
 
-const GITHUB_CHART_COLOR = "2563EB";
+// Content pages are split out so the home page ships a lighter first bundle.
+const AboutPage = lazy(() => import("./pages/AboutPage").then((m) => ({ default: m.AboutPage })));
+const SkillsPage = lazy(() =>
+  import("./pages/SkillsPage").then((m) => ({ default: m.SkillsPage })),
+);
+const ExperiencePage = lazy(() =>
+  import("./pages/ExperiencePage").then((m) => ({ default: m.ExperiencePage })),
+);
+const ProjectsPage = lazy(() =>
+  import("./pages/ProjectsPage").then((m) => ({ default: m.ProjectsPage })),
+);
 
-function getSectionTitle(id: SectionId, dict: (typeof DICT)[Lang]) {
-  switch (id) {
-    case "about":
-      return dict.about.title;
-    case "skills":
-      return dict.skills.title;
-    case "experience":
-      return dict.experience.title;
-    case "projects":
-      return dict.projects.title;
-  }
+function PageLoader() {
+  return (
+    <div className="flex min-h-[60vh] items-center justify-center">
+      <Sharingan spin className="h-20 w-20" />
+    </div>
+  );
 }
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState<SectionId | null>(null);
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState<Lang>("id");
   const [isDark, setIsDark] = useState(false);
@@ -44,7 +54,6 @@ export default function App() {
   const [contactStatus, setContactStatus] = useState<ContactStatus>("idle");
 
   const t = DICT[lang];
-  const isPanelOpen = activeSection !== null;
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark);
@@ -53,13 +62,6 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = lang === "id" ? "id" : "en";
   }, [lang]);
-
-  useEffect(() => {
-    document.body.style.overflow = isPanelOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isPanelOpen]);
 
   const handleContactSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
@@ -73,71 +75,17 @@ export default function App() {
     }, 1500);
   }, []);
 
-  const handleNavigate = useCallback((id: SectionId) => {
-    setActiveSection(id);
-  }, []);
+  const navLinks: NavLinkItem[] = PAGE_ORDER.map((id) => ({ id, name: t.nav[id] }));
 
-  const handleGoHome = useCallback(() => {
-    setActiveSection(null);
-    setMobileMenuOpen(false);
-  }, []);
-
-  const navLinks = [
-    { name: t.nav.about, id: "about" as const },
-    { name: t.nav.skills, id: "skills" as const },
-    { name: t.nav.experience, id: "experience" as const },
-    { name: t.nav.projects, id: "projects" as const },
-  ];
-
-  const sectionTitle = activeSection !== null ? getSectionTitle(activeSection, t) : "";
-
-  const renderPanelContent = () => {
-    switch (activeSection) {
-      case "about":
-        return (
-          <>
-            <AboutSection profile={DATA.profile} lang={lang} t={t} />
-            <EducationCertSection
-              certifications={DATA.certifications}
-              t={t}
-              onSelectCert={setSelectedCert}
-            />
-          </>
-        );
-      case "skills":
-        return <SkillsSection skills={DATA.skills} t={t} />;
-      case "experience":
-        return <ExperienceSection experiences={DATA.experiences} lang={lang} t={t} />;
-      case "projects":
-        return (
-          <>
-            <ProjectsSection
-              projects={DATA.projects}
-              lang={lang}
-              t={t}
-              onSelectProject={setSelectedProject}
-            />
-            <GithubSection
-              githubUrl={DATA.profile.github}
-              username={DATA.profile.githubUsername}
-              chartColor={GITHUB_CHART_COLOR}
-              isDark={isDark}
-              t={t}
-            />
-          </>
-        );
-      default:
-        return null;
-    }
-  };
+  const page = (content: ReactNode) => (
+    <PageTransition>
+      <Suspense fallback={<PageLoader />}>{content}</Suspense>
+    </PageTransition>
+  );
 
   return (
-    <div className="h-screen overflow-hidden bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-300 transition-colors duration-300 selection:bg-blue-200 selection:text-blue-900 sf-pro-font">
-      <FloatingWhatsApp waNumber={DATA.profile.wa} />
-      <BackgroundBlobs />
-
+    <div className="min-h-screen bg-paper font-body text-ink transition-colors duration-300">
       <Navbar
-        isScrolled={isPanelOpen}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
         lang={lang}
@@ -145,30 +93,57 @@ export default function App() {
         isDark={isDark}
         setIsDark={setIsDark}
         navLinks={navLinks}
-        activeSection={activeSection}
-        onNavigate={handleNavigate}
-        onGoHome={handleGoHome}
         t={t}
         onOpenContact={() => setIsContactModalOpen(true)}
       />
 
-      <main className="relative z-10 h-full">
-        <HeroSection
-          profile={DATA.profile}
-          t={t}
-          onViewExperience={() => handleNavigate("experience")}
-        />
-
-        <SectionPanel
-          isOpen={isPanelOpen}
-          sectionKey={activeSection}
-          onClose={handleGoHome}
-          title={sectionTitle}
-          t={t}
-        >
-          {renderPanelContent()}
-        </SectionPanel>
+      <main>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route
+              path="/"
+              element={page(<HomePage profile={DATA.profile} t={t} navLinks={navLinks} />)}
+            />
+            <Route
+              path={PAGE_PATH.about}
+              element={page(
+                <AboutPage
+                  profile={DATA.profile}
+                  certifications={DATA.certifications}
+                  lang={lang}
+                  t={t}
+                  onSelectCert={setSelectedCert}
+                />,
+              )}
+            />
+            <Route
+              path={PAGE_PATH.skills}
+              element={page(<SkillsPage skills={DATA.skills} t={t} />)}
+            />
+            <Route
+              path={PAGE_PATH.experience}
+              element={page(<ExperiencePage experiences={DATA.experiences} lang={lang} t={t} />)}
+            />
+            <Route
+              path={PAGE_PATH.projects}
+              element={page(
+                <ProjectsPage
+                  profile={DATA.profile}
+                  projects={DATA.projects}
+                  lang={lang}
+                  isDark={isDark}
+                  t={t}
+                  onSelectProject={setSelectedProject}
+                />,
+              )}
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </AnimatePresence>
       </main>
+
+      <Footer profile={DATA.profile} t={t} navLinks={navLinks} />
+      <FloatingWhatsApp waNumber={DATA.profile.wa} />
 
       <AnimatePresence>
         {selectedProject && (

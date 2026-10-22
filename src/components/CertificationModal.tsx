@@ -16,33 +16,41 @@ export function CertificationModal({ cert, onClose, lang, t }: CertificationModa
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto"
+      className="halftone-red fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#0b0b0b]/80 p-3 sm:p-4"
       onClick={onClose}
     >
       <motion.div
-        initial={{ scale: 0.9, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.9, y: 20 }}
+        role="dialog"
+        aria-modal="true"
+        aria-label={cert.title}
+        initial={{ scale: 0.9, rotate: -2, opacity: 0 }}
+        animate={{ scale: 1, rotate: 0, opacity: 1 }}
+        exit={{ scale: 0.9, rotate: 2, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 380, damping: 24 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-slate-800 w-full max-w-lg max-h-[min(100dvh-2rem,640px)] overflow-y-auto custom-scrollbar rounded-2xl sm:rounded-[2rem] p-6 sm:p-8 shadow-2xl relative border border-slate-100 dark:border-slate-700 my-auto"
+        className="brutal brutal-blood custom-scrollbar relative my-auto max-h-[min(100dvh-2rem,640px)] w-full max-w-lg overflow-y-auto bg-card p-6 sm:p-8"
       >
         <button
           type="button"
           onClick={onClose}
           aria-label={t.a11y.closeModal}
-          className="absolute top-6 right-6 p-2 bg-slate-100 dark:bg-slate-700 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/50 dark:hover:text-red-400 rounded-full transition-colors"
+          className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center border-[3px] border-ink bg-paper text-ink transition-colors hover:bg-blood hover:text-white"
         >
           <X size={20} aria-hidden />
         </button>
 
-        <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center mb-6">
-          <Award size={32} />
+        <div className="mb-6 flex h-16 w-16 items-center justify-center border-[3px] border-ink bg-blood text-white">
+          <Award size={32} aria-hidden />
         </div>
-        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2">{cert.title}</h3>
-        <p className="text-blue-600 dark:text-blue-400 font-bold mb-6">{cert.issuer}</p>
+        <h3 className="mb-3 pr-10 font-display text-2xl uppercase leading-tight text-ink">
+          {cert.title}
+        </h3>
+        <p className="mb-6 inline-block bg-ink px-2 py-1 font-mono text-xs font-bold uppercase text-paper">
+          {cert.issuer}
+        </p>
 
-        <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-xl border border-slate-100 dark:border-slate-700">
-          <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+        <div className="border-[3px] border-ink bg-paper p-5">
+          <p className="font-medium leading-relaxed text-ink">
             {lang === "id" ? cert.descId : cert.descEn}
           </p>
         </div>
@@ -50,7 +58,7 @@ export function CertificationModal({ cert, onClose, lang, t }: CertificationModa
         <button
           type="button"
           onClick={onClose}
-          className="w-full mt-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors"
+          className="brutal-sm press mt-8 w-full bg-ink py-3 font-mono text-sm font-bold uppercase tracking-wider text-paper"
         >
           {t.contactModal.close}
         </button>

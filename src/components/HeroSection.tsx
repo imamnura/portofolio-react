@@ -1,119 +1,155 @@
 import { motion } from "framer-motion";
-import { ChevronRight, Download, Mail, MapPin } from "lucide-react";
+import { ArrowRight, Download, Mail, MapPin } from "lucide-react";
+import { Fragment } from "react";
+import { Link } from "react-router";
 import type { Dictionary } from "../constants/dictionary";
+import { PAGE_PATH } from "../constants/routes";
 import type { Profile } from "../types/portfolio";
-import { HeroCodeVisual } from "./HeroCodeVisual";
 import { GithubIcon as Github } from "./icons/GithubIcon";
 import { LinkedinIcon as Linkedin } from "./icons/LinkedinIcon";
+import { ItachiPoster } from "./uchiha/ItachiPoster";
 
 type HeroSectionProps = {
   profile: Profile;
   t: Dictionary;
-  onViewExperience?: () => void;
 };
 
-export function HeroSection({ profile, t, onViewExperience }: HeroSectionProps) {
+const ctaBase =
+  "brutal press inline-flex w-full items-center justify-center gap-2 px-6 py-4 font-mono text-sm font-bold uppercase tracking-wider sm:w-auto";
+
+export function HeroSection({ profile, t }: HeroSectionProps) {
+  const nameWords = profile.name.split(" ");
+
   return (
-    <section className="min-h-screen flex items-center pt-20 pb-10 px-3 sm:px-4 md:px-8 sm:pt-24">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex-1 text-center lg:text-left"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-bold mb-8 shadow-sm">
+    <section className="relative overflow-hidden border-b-4 border-ink">
+      <span
+        className="text-stroke pointer-events-none absolute -left-4 top-1/2 -translate-y-1/2 select-none font-jp text-[11rem] font-black leading-none opacity-10 writing-vertical sm:text-[16rem]"
+        aria-hidden="true"
+      >
+        うちは
+      </span>
+
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-20">
+        <div className="min-w-0">
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="brutal-sm mb-8 inline-flex items-center gap-3 bg-card px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider text-ink"
+          >
             <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping bg-blood opacity-75" />
+              <span className="relative inline-flex h-3 w-3 bg-blood" />
             </span>
             {t.hero.available}
-          </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] mb-6 tracking-tight wrap-break-word">
-            {t.hero.greeting} <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-400">
-              {profile.name}
+          </motion.div>
+
+          <h1 className="mb-6">
+            <span className="mb-3 block font-mono text-sm font-bold uppercase tracking-[0.3em] text-ink-soft">
+              {t.hero.greeting}
+            </span>
+            <span className="block font-display text-5xl uppercase leading-[0.92] tracking-tight text-ink wrap-break-word sm:text-7xl xl:text-8xl">
+              {nameWords.map((word, index) => {
+                const isLast = index === nameWords.length - 1;
+                return (
+                  <Fragment key={word}>
+                    {index > 0 && " "}
+                    <span className="inline-block overflow-hidden align-bottom">
+                      <motion.span
+                        className={`inline-block ${isLast ? "-rotate-2 bg-blood px-2 text-white" : ""}`}
+                        initial={{ y: "110%" }}
+                        animate={{ y: 0 }}
+                        transition={{
+                          delay: 0.4 + index * 0.1,
+                          type: "spring",
+                          stiffness: 240,
+                          damping: 22,
+                        }}
+                      >
+                        {word}
+                      </motion.span>
+                    </span>
+                  </Fragment>
+                );
+              })}
             </span>
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 dark:text-slate-400 font-medium mb-10 max-w-2xl mx-auto lg:mx-0">
-            {t.hero.role}
-          </p>
 
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-12">
-            {onViewExperience ? (
-              <button
-                type="button"
-                onClick={onViewExperience}
-                className="w-full sm:w-auto px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl hover:scale-105 hover:shadow-xl transition-all flex items-center justify-center gap-2 group"
-              >
-                {t.hero.viewExp}{" "}
-                <ChevronRight
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.75 }}
+          >
+            <p className="animate-glitch mb-6 inline-block bg-ink px-3 py-1.5 font-mono text-base font-bold text-paper sm:text-lg">
+              {t.hero.role}
+            </p>
+            <p className="mb-10 max-w-xl text-lg font-medium leading-relaxed text-ink-soft">
+              {t.hero.intro}
+            </p>
+
+            <div className="mb-10 flex flex-wrap items-center gap-4">
+              <Link to={PAGE_PATH.experience} className={`${ctaBase} group bg-blood text-white`}>
+                {t.hero.viewExp}
+                <ArrowRight
                   size={18}
-                  className="group-hover:translate-x-1 transition-transform"
+                  className="transition-transform group-hover:translate-x-1"
                   aria-hidden
                 />
-              </button>
-            ) : (
-              <a
-                href="#experience"
-                className="w-full sm:w-auto px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl hover:scale-105 hover:shadow-xl transition-all flex items-center justify-center gap-2 group"
-              >
-                {t.hero.viewExp}{" "}
-                <ChevronRight
-                  size={18}
-                  className="group-hover:translate-x-1 transition-transform"
-                  aria-hidden
-                />
+              </Link>
+              <a href={profile.cvUrl} download className={`${ctaBase} bg-card text-ink`}>
+                <Download size={18} aria-hidden /> {t.hero.downloadCV}
               </a>
-            )}
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t.hero.linkedin} — ${profile.name}`}
+                className={`${ctaBase} bg-card text-ink`}
+              >
+                <Linkedin size={18} aria-hidden />
+                <span aria-hidden="true">{t.hero.linkedin}</span>
+              </a>
+            </div>
 
-            <a
-              href={profile.cvUrl}
-              download
-              className="w-full sm:w-auto px-8 py-4 bg-blue-50/50 dark:bg-slate-800/50 backdrop-blur-sm border border-blue-200 dark:border-slate-700 text-blue-700 dark:text-blue-400 font-bold rounded-2xl hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-500 dark:hover:text-slate-900 transition-all flex items-center justify-center gap-2"
-            >
-              <Download size={18} aria-hidden /> {t.hero.downloadCV}
-            </a>
-
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${t.hero.linkedin} — ${profile.name}`}
-              className="w-full sm:w-auto px-6 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-white font-bold rounded-2xl hover:scale-105 hover:shadow-lg transition-all flex items-center justify-center gap-2"
-            >
-              <Linkedin size={20} className="text-blue-600 dark:text-blue-400" aria-hidden />{" "}
-              <span className="hidden sm:inline" aria-hidden="true">
-                {t.hero.linkedin}
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t.a11y.githubProfile} (${profile.name})`}
+                className="brutal-sm press flex h-12 w-12 items-center justify-center bg-card text-ink"
+              >
+                <Github size={22} aria-hidden />
+              </a>
+              <a
+                href={`mailto:${profile.email}`}
+                aria-label={`${t.a11y.sendEmail}: ${profile.email}`}
+                className="brutal-sm press flex h-12 w-12 items-center justify-center bg-card text-ink"
+              >
+                <Mail size={22} aria-hidden />
+              </a>
+              <span className="brutal-sm flex items-center gap-2 bg-card px-3 py-2.5 font-mono text-xs font-bold uppercase text-ink">
+                <MapPin size={16} className="shrink-0 text-blood" aria-hidden />
+                <span className="sr-only">{t.a11y.locationInfo}: </span>
+                {profile.location}
               </span>
-            </a>
-          </div>
+            </div>
+          </motion.div>
+        </div>
 
-          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-6 text-slate-500 dark:text-slate-400">
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${t.a11y.githubProfile} (${profile.name})`}
-              className="p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm hover:text-slate-900 dark:hover:text-white hover:-translate-y-1 transition-all"
-            >
-              <Github size={24} aria-hidden />
-            </a>
-            <a
-              href={`mailto:${profile.email}`}
-              aria-label={`${t.a11y.sendEmail}: ${profile.email}`}
-              className="p-3 bg-white dark:bg-slate-800 rounded-full shadow-sm hover:text-blue-600 dark:hover:text-blue-400 hover:-translate-y-1 transition-all"
-            >
-              <Mail size={24} aria-hidden />
-            </a>
-            <span className="flex items-center gap-2 text-xs sm:text-sm font-semibold px-3 py-2.5 sm:px-4 sm:py-3 bg-white dark:bg-slate-800 rounded-full shadow-sm max-w-full">
-              <MapPin size={18} className="text-red-500 shrink-0" aria-hidden />{" "}
-              <span className="text-left">{profile.location}</span>
-            </span>
-          </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, rotate: 3 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{
+            delay: 0.5,
+            type: "spring",
+            stiffness: 160,
+            damping: 16,
+            opacity: { delay: 0.5, duration: 0.3 },
+          }}
+        >
+          <ItachiPoster t={t} />
         </motion.div>
-
-        <HeroCodeVisual />
       </div>
     </section>
   );

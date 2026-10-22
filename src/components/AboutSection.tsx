@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { Award, Briefcase, Code2, GraduationCap, Terminal } from "lucide-react";
+import { Award, Briefcase, Code2, GraduationCap } from "lucide-react";
 import type { Dictionary, Lang } from "../constants/dictionary";
 import type { Profile } from "../types/portfolio";
-import { SectionHeading } from "./SectionHeading";
+import { staggerContainer, stampIn } from "../utils/motionVariants";
+import { UchihaCrest } from "./uchiha/UchihaCrest";
 
 type AboutSectionProps = {
   profile: Profile;
@@ -10,49 +11,61 @@ type AboutSectionProps = {
   t: Dictionary;
 };
 
-export function AboutSection({ profile, lang, t }: AboutSectionProps) {
-  const stats = [
+export function getAboutStats(t: Dictionary) {
+  return [
     { label: t.about.exp, value: t.about.expVal, icon: Briefcase },
     { label: t.about.spec, value: t.about.specVal, icon: Code2 },
     { label: t.about.edu, value: t.about.eduVal, icon: GraduationCap },
     { label: t.about.cert, value: t.about.certVal, icon: Award },
   ];
+}
+
+export function AboutSection({ profile, lang, t }: AboutSectionProps) {
+  const stats = getAboutStats(t);
 
   return (
-    <section id="about" className="py-16 sm:py-24 px-3 sm:px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border border-white dark:border-slate-700 rounded-3xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-14 shadow-xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden"
-        >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 dark:bg-slate-700/50 rounded-full blur-3xl -z-10 transform translate-x-1/2 -translate-y-1/2" />
+    <section id="about" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        className="brutal relative overflow-hidden bg-card p-6 sm:p-10 md:p-14"
+      >
+        <UchihaCrest
+          className="pointer-events-none absolute -right-6 -top-6 h-40 w-auto rotate-12 opacity-15 sm:h-56"
+          aria-hidden="true"
+        />
+        <span className="font-display text-7xl leading-none text-blood" aria-hidden="true">
+          “
+        </span>
+        <p className="relative -mt-6 max-w-4xl text-lg font-medium leading-relaxed text-ink sm:text-xl md:text-2xl">
+          {profile.summary[lang]}
+        </p>
+      </motion.div>
 
-          <SectionHeading title={t.about.title} icon={Terminal} />
-          <p className="text-lg md:text-xl leading-relaxed text-slate-600 dark:text-slate-300 max-w-4xl font-medium">
-            {profile.summary[lang]}
-          </p>
-
-          <div className="mt-10 sm:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {stats.map((stat) => (
-              <motion.div
-                key={stat.label}
-                whileHover={{ y: -5 }}
-                className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col justify-center min-w-0"
-              >
-                <stat.icon className="text-blue-500 mb-4 opacity-80" size={28} />
-                <div className="text-[0.65rem] sm:text-sm font-bold text-slate-400 dark:text-slate-500 mb-1 uppercase tracking-wider leading-tight">
-                  {stat.label}
-                </div>
-                <div className="text-base sm:text-lg font-black text-slate-800 dark:text-white break-words">
-                  {stat.value}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+        className="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4"
+      >
+        {stats.map((stat) => (
+          <motion.div key={stat.label} variants={stampIn}>
+            <div className="brutal press flex h-full min-w-0 flex-col bg-card p-4 sm:p-6">
+              <div className="mb-4 flex h-11 w-11 items-center justify-center border-[3px] border-ink bg-blood text-white">
+                <stat.icon size={22} aria-hidden />
+              </div>
+              <div className="mb-1 font-mono text-[0.65rem] font-bold uppercase tracking-widest text-ink-soft sm:text-xs">
+                {stat.label}
+              </div>
+              <div className="font-display text-base uppercase leading-tight text-ink wrap-break-word sm:text-xl">
+                {stat.value}
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   );
 }
