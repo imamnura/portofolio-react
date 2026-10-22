@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
 
 type SectionHeadingProps = {
   title: string;
-  icon: LucideIcon;
+  icon: ComponentType<{ size?: number | string }>;
 };
 
 export function SectionHeading({ title, icon: Icon }: SectionHeadingProps) {

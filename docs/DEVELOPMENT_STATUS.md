@@ -18,14 +18,14 @@ Personal portfolio website for **Imam Nur Arifin** — a Frontend Engineer with 
 
 | Layer | Technology | Version |
 |---|---|---|
-| Framework | React | 19.2.x |
+| Framework | React | 19.3.x |
 | Build Tool | Vite | 8.x (Rolldown bundler) |
 | Styling | Tailwind CSS | 4.x |
-| Animations | Framer Motion | 12.x |
-| Icons | Lucide React | 0.468.x |
-| Language | TypeScript | 5.9.x |
-| Compiler | React Compiler (Babel) | 1.0.x |
-| Testing | Vitest + Testing Library | 4.x |
+| Animations | Framer Motion | 14.x |
+| Icons | Lucide React (brand icons: custom SVG) | 1.x |
+| Language | TypeScript | 7.0.x |
+| Compiler | React Compiler (Babel 8) | 1.0.x |
+| Testing | Vitest + Testing Library | 5.x |
 
 ---
 
@@ -41,6 +41,8 @@ portofolio-react/
 ├── src/
 │   ├── components/          # All UI components
 │   │   ├── icons/
+│   │   │   ├── GithubIcon.tsx     # Custom SVG icon (brand)
+│   │   │   ├── LinkedinIcon.tsx   # Custom SVG icon (brand)
 │   │   │   └── WhatsAppIcon.tsx   # Custom SVG icon
 │   │   ├── __tests__/       # Component unit tests
 │   │   ├── AboutSection.tsx

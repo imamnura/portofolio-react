@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Github } from "lucide-react";
 import type { Dictionary } from "../constants/dictionary";
+import { GithubIcon } from "./icons/GithubIcon";
 import { SectionHeading } from "./SectionHeading";
 
 type GithubSectionProps = {
@@ -15,7 +15,7 @@ export function GithubSection({ githubUrl, username, chartColor, isDark, t }: Gi
   return (
     <section className="py-16 sm:py-24 px-3 sm:px-4 md:px-8">
       <div className="max-w-5xl mx-auto text-center">
-        <SectionHeading title={t.github.title} icon={Github} />
+        <SectionHeading title={t.github.title} icon={GithubIcon} />
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -42,7 +42,7 @@ export function GithubSection({ githubUrl, username, chartColor, isDark, t }: Gi
               alt={`${username} — ${t.a11y.githubContributionChart}`}
               width={700}
               height={100}
-              className="min-w-[700px] h-auto object-contain mx-auto shrink-0"
+              className="min-w-175 h-auto object-contain mx-auto shrink-0"
               loading="lazy"
               decoding="async"
             />

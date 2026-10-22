@@ -1,6 +1,8 @@
-import { Code2, Github, Globe, Linkedin, Mail, MapPin } from "lucide-react";
+import { Code2, Globe, Mail, MapPin } from "lucide-react";
 import type { Dictionary } from "../constants/dictionary";
 import type { Profile } from "../types/portfolio";
+import { GithubIcon as Github } from "./icons/GithubIcon";
+import { LinkedinIcon as Linkedin } from "./icons/LinkedinIcon";
 import { WhatsAppIcon } from "./icons/WhatsAppIcon";
 import type { NavLinkItem } from "./Navbar";
 
@@ -14,10 +16,10 @@ type FooterProps = {
 export function Footer({ profile, t, navLinks, onNavigate }: FooterProps) {
   return (
     <footer className="bg-slate-950 text-slate-400 py-12 sm:py-16 px-3 sm:px-4 md:px-8 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-30" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-px bg-linear-to-r from-transparent via-blue-500 to-transparent opacity-30" />
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 mb-10 sm:mb-12">
         <div className="col-span-1 lg:col-span-2 min-w-0">
-          <h3 className="text-2xl sm:text-3xl font-black text-white mb-6 break-words">
+          <h3 className="text-2xl sm:text-3xl font-black text-white mb-6 wrap-break-word">
             {profile.name}
           </h3>
           <p className="text-slate-400 max-w-sm mb-8 font-medium leading-relaxed">

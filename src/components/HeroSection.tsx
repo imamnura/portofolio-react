@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { ChevronRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
+import { ChevronRight, Download, Mail, MapPin } from "lucide-react";
 import type { Dictionary } from "../constants/dictionary";
 import type { Profile } from "../types/portfolio";
 import { HeroCodeVisual } from "./HeroCodeVisual";
+import { GithubIcon as Github } from "./icons/GithubIcon";
+import { LinkedinIcon as Linkedin } from "./icons/LinkedinIcon";
 
 type HeroSectionProps = {
   profile: Profile;
@@ -27,9 +29,9 @@ export function HeroSection({ profile, t, onViewExperience }: HeroSectionProps) 
             </span>
             {t.hero.available}
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] mb-6 tracking-tight break-words">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] mb-6 tracking-tight wrap-break-word">
             {t.hero.greeting} <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-400">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-cyan-400">
               {profile.name}
             </span>
           </h1>
